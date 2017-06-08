@@ -1,0 +1,32 @@
+{
+
+    "manifest_version": 2,
+    "name": "Monastery",
+    "version": "0.1",
+
+    "description": "Monastery restricts your browsing session and blocks and limits time spent on a user-supplied blacklist. It can also provide a delay before loading a blacklisted page, so as to detach instant gratification from the site.",
+    "homepage_url": "https://github.com/omivore/monastery",
+    "icons": {
+        "48": "icons/monastery.svg"
+    },
+
+    "permissions": ["activeTab", "storage"],
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["watchdog.js"]
+        }
+    ],
+    "browser_action": {
+        "default_icon": "icons/monastery.svg",
+        "default_title": "Monastery",
+        "default_popup": "popup/status_panel.html"
+    },
+    "options_ui": {
+        "page": "options.html",
+        "browser_style": true
+    }
+}
