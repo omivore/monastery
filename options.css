@@ -1,5 +1,10 @@
-h3 {
+p, h3 {
     font-family: Verdana, Arial, sans-serif;
+}
+p {
+    margin-top: 1;
+    color: red;
+    font-style: italic;
 }
 #blacklist, #addition {
     width: 400px;

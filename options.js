@@ -27,8 +27,7 @@ function appendBlacklist(e) {
     var input = document.querySelector('#addition');
 
     function getBlacklist(result) {
-        newBlacklist = result.blacklist;
-        newBlacklist.push(input.value);
+        newBlacklist = updateBlacklist(result.blacklist, input.value);
         input.value = '';
         var setting = browser.storage.local.set({
             blacklist: newBlacklist
@@ -42,6 +41,22 @@ function appendBlacklist(e) {
 
     var getting = browser.storage.local.get("blacklist");
     getting.then(getBlacklist, onError);
+}
+
+function updateBlacklist(existList, addition) {
+    console.log(existList);
+    console.log("addition: " + addition);
+    var errorText = '';
+    if (addition == '') {
+        errorText = "No site provided."
+    } else if (existList.indexOf(addition) != -1) {
+        errorText = "Site is already on the list."
+    } else {
+        existList.push(addition);
+    }
+
+    document.querySelector('#errorField').innerHTML = errorText;
+    return existList;
 }
 
 document.addEventListener("DOMContentLoaded", loadBlacklist);
