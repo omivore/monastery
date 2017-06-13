@@ -10,10 +10,6 @@ function loadBlacklist() {
         }
     }
 
-    function onError(error) {
-        console.log(`Error: ${error}`);
-    }
-
     while (select.hasChildNodes()) {
         select.removeChild(select.lastChild);
     }
@@ -43,6 +39,33 @@ function appendBlacklist(e) {
     getting.then(getBlacklist, onError);
 }
 
+function removeBlacklist() {
+    var removal = []
+    var select = document.querySelector('#blacklist');
+    for (let i = 0, option; i < select.length; i++) {
+        option = select.options[i];
+        if (option.selected) {
+            removal.push(i);
+        }
+    }
+
+    function removeSelected(result) {
+        console.log(removal);
+        var newBlacklist = result.blacklist;
+        for (let i = 0; i < removal.length; i++) {
+            // Subtract the number of already removed elements due to shortened array.
+            newBlacklist.splice(removal[i] - i, 1);
+        }
+        var setter = browser.storage.local.set({
+            blacklist: newBlacklist
+        });
+        setter.then(function(result) {loadBlacklist();}, onError);
+    }
+
+    var getting = browser.storage.local.get("blacklist");
+    getting.then(removeSelected, onError);
+}
+
 function updateBlacklist(existList, addition) {
     console.log(existList);
     console.log("addition: " + addition);
@@ -59,5 +82,10 @@ function updateBlacklist(existList, addition) {
     return existList;
 }
 
+function onError(error) {
+    console.log(`Error: ${error}`);
+}
+
 document.addEventListener("DOMContentLoaded", loadBlacklist);
+document.querySelector('button').addEventListener("click", removeBlacklist);
 document.querySelector("form").addEventListener("submit", appendBlacklist);
