@@ -1,7 +1,2 @@
-console.log(window.location);
-
-window.addEventListener("click", notifyExtension);
-
-function notifyExtension(e) {
-    browser.runtime.sendMessage({"url": window.location});
-}
+var port = browser.runtime.connect({name: "watchdog_port"});
+port.postMessage({message: window.location});

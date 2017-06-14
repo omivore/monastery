@@ -1,7 +1,12 @@
-console.log("background.js loaded");
+var port;
 
-browser.runtime.onMessage.addListener(considerSite);
+function connected(receivedPort) {
+    port = receivedPort;
+    port.onMessage.addListener(processReport);
+}
 
-function considerSite(message) {
-    console.log(message.url.origin);
+browser.runtime.onConnect.addListener(connected);
+
+function processReport(message) {
+    console.log(message.message.origin);
 }
