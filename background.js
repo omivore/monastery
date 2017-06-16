@@ -1,12 +1,31 @@
-var port;
-
-function connected(receivedPort) {
-    port = receivedPort;
-    port.onMessage.addListener(processReport);
+function reload(message) {
+    if (message.reload) {
+        setSiteFilter();
+    }
 }
 
-browser.runtime.onConnect.addListener(connected);
-
-function processReport(message) {
-    console.log(message.message.origin);
+function gatekeep(details) {
+    console.log("blocking this page");
+    return {cancel: true};
 }
+
+function setSiteFilter() {
+    browser.webRequest.onBeforeSendHeaders.removeListener(gatekeep);
+    browser.storage.local.get("blacklist")
+        .then(result => {
+            var urls = [];
+            for (let site of result.blacklist) {
+                urls.push("*://*." + site + "/*");
+                urls.push("*://" + site + "/*");
+            }
+            browser.webRequest.onBeforeSendHeaders.addListener(gatekeep,
+                                                               {urls: urls},
+                                                               ["blocking"]);
+        })
+        .catch(error => {
+            console.log(`Error: ${error}`);
+        });
+}
+
+browser.runtime.onMessage.addListener(reload);
+setSiteFilter();

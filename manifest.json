@@ -10,7 +10,7 @@
         "48": "icons/monastery.svg"
     },
 
-    "permissions": ["activeTab", "storage"],
+    "permissions": ["<all_urls>", "tabs", "webRequest", "webRequestBlocking", "storage"],
     "background": {
         "scripts": ["background.js"]
     },

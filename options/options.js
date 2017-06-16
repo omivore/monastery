@@ -52,6 +52,7 @@ function updateBlacklist(modify) {
             blacklist: newBlacklist
         });
         setter.then(function(result) {loadBlacklist();}, onError);
+        browser.runtime.sendMessage({reload: true});
     }
 
     var getting = browser.storage.local.get("blacklist");
