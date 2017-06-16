@@ -3,7 +3,6 @@ function loadBlacklist() {
 
     function showBlacklist(result) {
         for (let i = 0; i < result.blacklist.length; i++) {
-            console.log(result.blacklist[i]);
             select.appendChild(new Option(result.blacklist[i], result.blacklist[i]));
         }
     }
@@ -21,7 +20,6 @@ function appendBlacklist() {
 
     updateBlacklist(function(blacklist) {
         newBlacklist = validateList(blacklist, input.value);
-        console.log(newBlacklist);
         input.value = '';
         return newBlacklist;
     });
@@ -61,8 +59,6 @@ function updateBlacklist(modify) {
 }
 
 function validateList(existList, addition) {
-    console.log(existList);
-    console.log("addition: " + addition);
     var errorText = '';
     if (addition == '') {
         errorText = "No site provided."
