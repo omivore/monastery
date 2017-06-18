@@ -1,0 +1,19 @@
+p {
+    font-family: Verdana, Arial, sans-serif;
+}
+#timer {
+    border: 1px black solid;
+    border-radius: 5px;
+    font-size: 20px;
+    text-align: center;
+}
+#settings {
+    font-style: italic;
+    text-decoration: underline;
+    cursor: pointer;
+    color: blue;
+    font-size: 15px;
+}
+#settings:hover {
+    text-decoration: none;
+}
