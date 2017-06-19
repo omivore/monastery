@@ -3,6 +3,12 @@
     "manifest_version": 2,
     "name": "Monastery",
     "version": "0.1",
+    "applications": {
+        "gecko": {
+            "id": "monastery@omivore.com",
+            "strict_min_version": "42.0"
+        }
+    },
 
     "description": "Monastery restricts your browsing session and blocks and limits time spent on a user-supplied blacklist. It can also provide a delay before loading a blacklisted page, so as to detach instant gratification from the site.",
     "homepage_url": "https://github.com/omivore/monastery",

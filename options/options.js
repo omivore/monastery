@@ -10,7 +10,7 @@ function loadBlacklist() {
     while (select.hasChildNodes()) {
         select.removeChild(select.lastChild);
     }
-    var getting = browser.storage.local.get("blacklist");
+    var getting = browser.storage.sync.get("blacklist");
     getting.then(showBlacklist, onError);
 }
 
@@ -48,14 +48,14 @@ function updateBlacklist(modify) {
     function updateList(result) {
         var newBlacklist = (typeof result.blacklist === 'undefined') ? [] : result.blacklist;
         newBlacklist = modify(newBlacklist);
-        var setter = browser.storage.local.set({
+        var setter = browser.storage.sync.set({
             blacklist: newBlacklist
         });
         setter.then(function(result) {loadBlacklist();}, onError);
         browser.runtime.sendMessage({reload: true});
     }
 
-    var getting = browser.storage.local.get("blacklist");
+    var getting = browser.storage.sync.get("blacklist");
     getting.then(updateList, onError);
 }
 

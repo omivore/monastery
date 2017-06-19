@@ -11,7 +11,7 @@ function gatekeep(details) {
 
 function setSiteFilter() {
     browser.webRequest.onBeforeSendHeaders.removeListener(gatekeep);
-    browser.storage.local.get("blacklist")
+    browser.storage.sync.get("blacklist")
         .then(result => {
             var urls = [];
             for (let site of result.blacklist) {
