@@ -6,7 +6,8 @@ function reload(message) {
 
 function gatekeep(details) {
     console.log("blocking this page");
-    return {cancel: true};
+    console.log(browser.extension.getURL("block_page.html"));
+    return {redirectUrl: browser.extension.getURL("block_page.html")};
 }
 
 function setSiteFilter() {
