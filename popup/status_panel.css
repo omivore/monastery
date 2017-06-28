@@ -1,10 +1,13 @@
+body {
+    background-color: white;
+}
 p {
     font-family: Verdana, Arial, sans-serif;
+    font-size: 20px;
 }
 #timer {
     border: 1px black solid;
     border-radius: 5px;
-    font-size: 20px;
     text-align: center;
 }
 #settings {

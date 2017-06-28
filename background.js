@@ -6,7 +6,7 @@ var timeRemaining = timeAllowance;
 
 function gatekeeper(event) {
     browser.storage.sync.get("hourglass").then(result => {
-        if (result != 0) {      // Permitted Stage
+        if (result.hourglass != 0) {      // Permitted Stage
             isTresspassing().then(tresspass => {
                 if (tresspass) {
                     // Start or continue timer
@@ -79,7 +79,7 @@ function getTresspassing(process) {
 
 // Create a timer if it doesn't exist. Once timer is established, add the gatekeeper.
 browser.storage.sync.get("hourglass").then(result => {
-    if (Object.keys(result.hourglass).length == 0) {
+    if (Object.keys(result).length == 0) {
         console.log("Creating new hourglass");
         browser.storage.sync.set({hourglass: timeAllowance})
             .catch(error => console.log(`Error: ${error}`));
