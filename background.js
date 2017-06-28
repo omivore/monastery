@@ -1,5 +1,7 @@
 // background.js
-let timeAllowance = 1 * 60;
+
+// Default to allowing one hour of time, that is, 60 mintues, in seconds.
+let timeAllowance = 60 * 60;
 
 var hourglass = null;
 var timeRemaining = timeAllowance;
@@ -77,17 +79,31 @@ function getTresspassing(process) {
         .then(process).catch(error => console.log(`Error: ${error}`));
 }
 
-// Create a timer if it doesn't exist. Once timer is established, add the gatekeeper.
-browser.storage.sync.get("hourglass").then(result => {
+// Get and set the timeAllowance. If it doesn't exist, create it, defaulting to an hour.
+// Then create a timer if it doesn't exist. Once timer is established, add the gatekeeper.
+browser.storage.sync.get("timeout").then(result => {
     if (Object.keys(result).length == 0) {
-        console.log("Creating new hourglass");
-        browser.storage.sync.set({hourglass: timeAllowance})
-            .catch(error => console.log(`Error: ${error}`));
-        timeRemaining = timeAllowance;
+        console.log("Setting default time allowance");
+        browser.storage.sync.set({timeout: 60});
+        timeAllowance = 60 * 60;    // One hour in seconds.
     }
-    else timeRemaining = result.hourglass;
+    else {
+        timeAllowance = result.timeout * 60;   // Convert minutes to seconds.
+        console.log("Using stored time allowance of " + result.timeout + " minutes.");
+    }
 }).then(result => {
-console.log(timeRemaining);
-    browser.tabs.onUpdated.addListener(gatekeeper);
-    browser.tabs.onActivated.addListener(gatekeeper);
+    browser.storage.sync.get("hourglass").then(result => {
+        if (Object.keys(result).length == 0) {
+            console.log("Creating new hourglass");
+            browser.storage.sync.set({hourglass: timeAllowance})
+            timeRemaining = timeAllowance;
+        }
+        else {
+            timeRemaining = result.hourglass;
+            console.log("Using stored hourglass with " + timeRemaining + " seconds left.");
+        }
+    }).then(result => {
+        browser.tabs.onUpdated.addListener(gatekeeper);
+        browser.tabs.onActivated.addListener(gatekeeper);
+    })
 });
