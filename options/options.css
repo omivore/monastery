@@ -1,11 +1,19 @@
 p, h3 {
     font-family: Verdana, Arial, sans-serif;
 }
-p {
+#errorField {
     margin-top: 1;
     color: red;
     font-style: italic;
 }
 #blacklist, #addition {
     width: 400px;
+}
+
+#blockTime input, #blockTime p{
+    display: inline;
+}
+#blockTime input {
+    width: 70px;
+    text-align: center;
 }

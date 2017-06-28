@@ -7,7 +7,7 @@
     </head>
 
     <body>
-        <form>
+        <form id="sites">
             <h3>Blacklisted Sites</h3>
             <div>
                 <select id="blacklist" multiple></select>
@@ -19,6 +19,16 @@
                 <input type="submit" value="Add">
             </div>
             <p id="errorField"></p>
+        </form>
+        <form id="settings">
+            <h3>Blocking Settings</h3>
+            <div id="blockTime">
+                <input id="hours" type="number" min="0" max="23">
+                <p>Hours</p>
+                <input id="minutes" type="number" min="0" max="59">
+                <p>Minutes</p>
+                <input type="submit" value="Save">
+            </div>
         </form>
 
         <script src="options.js"></script>

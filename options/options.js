@@ -1,3 +1,7 @@
+
+
+/// Blacklist Sites
+
 function loadBlacklist() {
     var select = document.querySelector('#blacklist');
 
@@ -73,13 +77,39 @@ function validateList(existList, addition) {
     return existList;
 }
 
+
+/// Blocking Settings
+
+function loadTimeout() {
+    browser.storage.sync.get("timeout").then(result => {
+        document.querySelector("#hours").value = Math.floor(result.timeout / 60);
+        document.querySelector("#minutes").value = Math.floor(result.timeout % 60);
+    }).catch(onError);
+}
+
+function saveTimeout() {
+    var timeLeft = document.querySelector("#hours").value * 60 +
+                   document.querySelector("#minutes").value;
+    browser.storage.sync.set({timeout: timeLeft}).catch(onError);
+}
+
+
+/// Initialization and Setup
+
 function onError(error) {
     console.log(`Error: ${error}`);
 }
 
-document.addEventListener("DOMContentLoaded", loadBlacklist);
+document.addEventListener("DOMContentLoaded", function(e) {
+    loadBlacklist();
+    loadTimeout();
+});
 document.querySelector('button').addEventListener("click", removeBlacklist);
-document.querySelector("form").addEventListener("submit", function(e) {
+document.querySelector("#sites").addEventListener("submit", function(e) {
     e.preventDefault();
     appendBlacklist();
+});
+document.querySelector("#settings").addEventListener("submit", function(e) {
+    e.preventDefault();
+    saveTimeout();
 });
