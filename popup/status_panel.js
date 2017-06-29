@@ -15,6 +15,6 @@ console.log(hours+":"+minutes+":"+seconds);
 }
 
 document.querySelector('#settings').addEventListener('click', function (event) {
-    browser.runtime.openOptionsPage().catch(error => console.log(`Error: ${error}`));
+    browser.runtime.openOptionsPage();
 });
 browser.runtime.onMessage.addListener(message => updateClock(message.timeRemaining));

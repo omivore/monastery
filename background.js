@@ -17,8 +17,7 @@ function gatekeeper(event) {
                     // Stop timer and update hourglass
                     clearInterval(hourglass);
                     hourglass = null;
-                    browser.storage.sync.set({hourglass: timeRemaining})
-                        .catch(error => console.log(`Error: ${error}`));
+                    browser.storage.sync.set({hourglass: timeRemaining});
                 }
             });
         } else {                // Blocking Stage
@@ -47,8 +46,7 @@ function sandTick() {
     browser.runtime.sendMessage({"timeRemaining": timeRemaining});
     // Check if time is up, in which case redirect all tresspassers.
     if (timeRemaining <= 0) {
-        browser.storage.sync.set({hourglass: 0})
-            .catch(error => console.log(`Error: ${error}`));
+        browser.storage.sync.set({hourglass: 0});
         clearInterval(hourglass);
         timeRemaining = 0;
         blockAll();
@@ -62,7 +60,7 @@ function blockAll() {
                 tab.id,
                 {url: browser.extension.getURL("block_page.html")});
         }
-    }).catch(error => console.log(`Error: #{error}`));
+    });
 
 }
 
@@ -76,7 +74,7 @@ function getTresspassing(process) {
             }
             return browser.tabs.query({url: urls, active: true});
         })
-        .then(process).catch(error => console.log(`Error: ${error}`));
+        .then(process);
 }
 
 // Get and set the timeAllowance. If it doesn't exist, create it, defaulting to an hour.

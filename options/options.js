@@ -15,7 +15,7 @@ function loadBlacklist() {
         select.removeChild(select.lastChild);
     }
     var getting = browser.storage.sync.get("blacklist");
-    getting.then(showBlacklist, onError);
+    getting.then(showBlacklist);
 }
 
 function appendBlacklist() {
@@ -55,12 +55,12 @@ function updateBlacklist(modify) {
         var setter = browser.storage.sync.set({
             blacklist: newBlacklist
         });
-        setter.then(function(result) {loadBlacklist();}, onError);
+        setter.then(function(result) {loadBlacklist();});
         browser.runtime.sendMessage({reload: true});
     }
 
     var getting = browser.storage.sync.get("blacklist");
-    getting.then(updateList, onError);
+    getting.then(updateList);
 }
 
 function validateList(existList, addition) {
@@ -84,7 +84,7 @@ function loadTimeout() {
     browser.storage.sync.get("timeout").then(result => {
         document.querySelector("#hours").value = Math.floor(result.timeout / 60);
         document.querySelector("#minutes").value = Math.floor(result.timeout % 60);
-    }).catch(onError);
+    });
 
     // Clear the save status; this is the current version.
     document.querySelector("#saveState").innerHTML = "";
@@ -93,7 +93,7 @@ function loadTimeout() {
 function saveTimeout() {
     var timeLeft = document.querySelector("#hours").value * 60 +
                    document.querySelector("#minutes").value;
-    browser.storage.sync.set({timeout: timeLeft}).catch(onError);
+    browser.storage.sync.set({timeout: timeLeft});
 
     // Update status to saved
     document.querySelector("#saveState").innerHTML = "saved";
@@ -108,10 +108,6 @@ document.querySelector("#hours").addEventListener("input", showEdited);
 document.querySelector("#minutes").addEventListener("input", showEdited);
 
 /// Initialization and Setup
-
-function onError(error) {
-    console.log(`Error: ${error}`);
-}
 
 document.addEventListener("DOMContentLoaded", function(e) {
     loadBlacklist();
