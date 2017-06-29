@@ -17,3 +17,20 @@ p, h3 {
     width: 70px;
     text-align: center;
 }
+#saveState {
+    font-size: 15px;
+    font-style: italic;
+    margin-left: 10px;
+}
+#saveState.edited {
+    color: red;
+}
+#saveState.saved {
+    color: green;
+
+    animation: fadeOut 0.5s linear 0.5s 1 forwards;
+}
+@keyframes fadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}

@@ -1,4 +1,4 @@
-
+// options.js
 
 /// Blacklist Sites
 
@@ -85,14 +85,27 @@ function loadTimeout() {
         document.querySelector("#hours").value = Math.floor(result.timeout / 60);
         document.querySelector("#minutes").value = Math.floor(result.timeout % 60);
     }).catch(onError);
+
+    // Clear the save status; this is the current version.
+    document.querySelector("#saveState").innerHTML = "";
 }
 
 function saveTimeout() {
     var timeLeft = document.querySelector("#hours").value * 60 +
                    document.querySelector("#minutes").value;
     browser.storage.sync.set({timeout: timeLeft}).catch(onError);
+
+    // Update status to saved
+    document.querySelector("#saveState").innerHTML = "saved";
+    document.querySelector("#saveState").classList = "saved";
 }
 
+function showEdited() {
+    document.querySelector("#saveState").innerHTML = "edited";
+    document.querySelector("#saveState").classList = "edited";
+}
+document.querySelector("#hours").addEventListener("input", showEdited);
+document.querySelector("#minutes").addEventListener("input", showEdited);
 
 /// Initialization and Setup
 
