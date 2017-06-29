@@ -43,7 +43,8 @@ function sandTick() {
     // Decrement timeRemaining.
     timeRemaining -= 1;
     // Update the status panel.
-    browser.runtime.sendMessage({"timeRemaining": timeRemaining});
+    browser.runtime.sendMessage({"timeRemaining": timeRemaining})
+        .catch(error => { });   // If there's an error, the popup ain't open.
     // Check if time is up, in which case redirect all tresspassers.
     if (timeRemaining <= 0) {
         browser.storage.sync.set({hourglass: 0});
@@ -58,7 +59,8 @@ function blockAll() {
         for (let tab of result) {
             browser.tabs.update(
                 tab.id,
-                {url: browser.extension.getURL("block_page.html")});
+                {url: browser.extension.getURL("block_page.html")}
+            );
         }
     });
 
@@ -77,6 +79,14 @@ function getTresspassing(process) {
         .then(process);
 }
 
+// Create empty blacklist if it doesn't exist yet.
+browser.storage.sync.get("blacklist").then(result => {
+    if (Object.keys(result).length == 0) {
+        console.log("Creating empty blacklist");
+        browser.storage.sync.set({blacklist: []});
+    }
+});
+
 // Get and set the timeAllowance. If it doesn't exist, create it, defaulting to an hour.
 // Then create a timer if it doesn't exist. Once timer is established, add the gatekeeper.
 browser.storage.sync.get("timeout").then(result => {
@@ -84,8 +94,7 @@ browser.storage.sync.get("timeout").then(result => {
         console.log("Setting default time allowance");
         browser.storage.sync.set({timeout: 60});
         timeAllowance = 60 * 60;    // One hour in seconds.
-    }
-    else {
+    } else {
         timeAllowance = result.timeout * 60;   // Convert minutes to seconds.
         console.log("Using stored time allowance of " + result.timeout + " minutes.");
     }
@@ -95,8 +104,7 @@ browser.storage.sync.get("timeout").then(result => {
             console.log("Creating new hourglass");
             browser.storage.sync.set({hourglass: timeAllowance})
             timeRemaining = timeAllowance;
-        }
-        else {
+        } else {
             timeRemaining = result.hourglass;
             console.log("Using stored hourglass with " + timeRemaining + " seconds left.");
         }
