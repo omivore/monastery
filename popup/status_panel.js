@@ -1,6 +1,5 @@
 function updateClock(secondsRemaining) {
     var time = "";
-console.log(secondsRemaining);
     var hours = Math.floor(secondsRemaining / 3600);
     hours = (hours < 10) ? "0" + hours : hours;
     secondsRemaining %= 3600;
@@ -10,7 +9,6 @@ console.log(secondsRemaining);
     secondsRemaining %= 60;
 
     var seconds = (secondsRemaining < 10) ? "0" + secondsRemaining : secondsRemaining;
-console.log(hours+":"+minutes+":"+seconds);
     document.querySelector("#timer").innerHTML = hours + ":" + minutes + ":" + seconds;
 }
 

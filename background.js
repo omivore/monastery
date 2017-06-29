@@ -34,7 +34,7 @@ function gatekeeper(event) {
 function isTresspassing() {
     return getTresspassing(result => {
         // If result is not empty, then is tresspassing.
-        if (result) return true;
+        if (result.length > 0) return true;
         else return false;
     });
 }
