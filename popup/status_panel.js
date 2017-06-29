@@ -16,3 +16,6 @@ document.querySelector('#settings').addEventListener('click', function (event) {
     browser.runtime.openOptionsPage();
 });
 browser.runtime.onMessage.addListener(message => updateClock(message.timeRemaining));
+
+// On open, show whatever time is currently stored and available.
+browser.storage.sync.get("hourglass").then(result => updateClock(result.hourglass));
