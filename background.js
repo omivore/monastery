@@ -99,17 +99,27 @@ browser.storage.sync.get("timeout").then(result => {
         console.log("Using stored time allowance of " + result.timeout + " minutes.");
     }
 }).then(result => {
-    browser.storage.sync.get("hourglass").then(result => {
-        if (Object.keys(result).length == 0) {
+    browser.storage.sync.get(["hourglass", "hourglassExpiry"]).then(result => {
+        // If there is no hourglass, OR if that hourglass has expired, make a new one.
+        if (Object.keys(result).length == 0 || Date.now() > result.hourglassExpirty ) {
             console.log("Creating new hourglass");
-            browser.storage.sync.set({hourglass: timeAllowance})
+            // Get today's date and set the hourglass to expire in its last minutes.
+            var today = new Date(Date.now());
+            today.setHours(23);
+            today.setMinutes(59);
+            today.setSeconds(59);
+            today.setMilliseconds(900);
+            browser.storage.sync.set({hourglass: timeAllowance,
+                                      hourglassExpiry: today});
             timeRemaining = timeAllowance;
+            console.log("Hourglass expires " + today.toString());
         } else {
             timeRemaining = result.hourglass;
             console.log("Using stored hourglass with " + timeRemaining + " seconds left.");
+            console.log("Hourglass expires " + result.hourglassExpiry);
         }
     }).then(result => {
         browser.tabs.onUpdated.addListener(gatekeeper);
         browser.tabs.onActivated.addListener(gatekeeper);
-    })
+    });
 });
