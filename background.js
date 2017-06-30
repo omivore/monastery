@@ -45,6 +45,7 @@ function sandTick() {
     // Update the status panel.
     browser.runtime.sendMessage({"timeRemaining": timeRemaining})
         .catch(error => { });   // If there's an error, the popup ain't open.
+
     // Check if time is up, in which case redirect all tresspassers.
     if (timeRemaining <= 0) {
         browser.storage.sync.set({hourglass: 0});
@@ -63,7 +64,6 @@ function blockAll() {
             );
         }
     });
-
 }
 
 function getTresspassing(process) {

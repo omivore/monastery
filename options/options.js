@@ -113,12 +113,30 @@ document.addEventListener("DOMContentLoaded", function(e) {
     loadBlacklist();
     loadTimeout();
 });
-document.querySelector('button').addEventListener("click", removeBlacklist);
+document.querySelector('button').addEventListener("click", function(e) {
+    approveEdit().then(approved => {
+        if (approved) removeBlacklist();
+    });
+});
 document.querySelector("#sites").addEventListener("submit", function(e) {
     e.preventDefault();
     appendBlacklist();
 });
 document.querySelector("#settings").addEventListener("submit", function(e) {
     e.preventDefault();
-    saveTimeout();
+    approveEdit().then(approved => {
+        if (approved) saveTimeout();
+    });
 });
+
+/// Disable select options if time is up for today
+
+function approveEdit() {
+    return browser.storage.sync.get("hourglass")
+        .then(result => {
+            if (result.hourglass == 0) {
+                document.querySelector("#disabledNotice").classList.remove("hidden");
+                return false;
+            } else return true;
+        });
+}
