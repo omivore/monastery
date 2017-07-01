@@ -1,6 +1,8 @@
-p, h3 {
+p, span, h3 {
     font-family: Verdana, Arial, sans-serif;
 }
+
+/* Blacklisted Settings */
 #errorField {
     margin-top: 1;
     color: red;
@@ -10,6 +12,7 @@ p, h3 {
     width: 400px;
 }
 
+/* Blocking Settgins */
 #blockTime input, #blockTime p{
     display: inline;
 }
@@ -27,7 +30,6 @@ p, h3 {
 }
 #saveState.saved {
     color: green;
-
     animation: fadeOut 0.5s linear 0.5s 1 forwards;
 }
 @keyframes fadeOut {
@@ -35,6 +37,20 @@ p, h3 {
     to {opacity: 0;}
 }
 
+/* Notification Settings */
+#notifications input[type=submit], #notifications input[type=button] {
+    width: 70px;
+    margin-top: 20px;
+}
+#notifications input[type=number] {
+    width: 50px;
+    height: 25px;
+}
+#notifications span {
+    margin-left: 10px;
+}
+
+/* Disable Notice Styles */
 #disabledNotice {
     color: red;
     font-style: italic;

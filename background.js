@@ -109,6 +109,14 @@ browser.storage.sync.get("blacklist").then(result => {
     }
 });
 
+// Create default notifications list if it doesn't exist yet.
+browser.storage.sync.get("notifications").then(result => {
+    if (Object.keys(result).length == 0) {
+        console.log("Creating default notification at 15 minutes");
+        browser.storage.sync.set({notifications: [15]});
+    }
+});
+
 // Get and set the timeAllowance. If it doesn't exist, create it, defaulting to an hour.
 // Then create a timer if it doesn't exist. Once timer is established, add the gatekeeper.
 browser.storage.sync.get("timeout").then(result => {
@@ -123,7 +131,7 @@ browser.storage.sync.get("timeout").then(result => {
 }).then(result => {
     browser.storage.sync.get(["hourglass", "hourglassExpiry"]).then(result => {
         // If there is no hourglass, OR if that hourglass has expired, make a new one.
-        if (Object.keys(result).length == 0 || Date.now() > result.hourglassExpirty ) {
+        if (Object.keys(result).length == 0 || Date.now() > result.hourglassExpiry ) {
             console.log("Creating new hourglass");
             // Get today's date and set the hourglass to expire in its last minutes.
             var today = new Date(Date.now());

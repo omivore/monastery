@@ -77,7 +77,6 @@ function validateList(existList, addition) {
     return existList;
 }
 
-
 /// Blocking Settings
 
 function loadTimeout() {
@@ -107,8 +106,44 @@ function showEdited() {
 document.querySelector("#hours").addEventListener("input", showEdited);
 document.querySelector("#minutes").addEventListener("input", showEdited);
 
-/// Initialization and Setup
+/// Notification Settings
 
+// Load the notifications
+browser.storage.sync.get("notifications").then(result => {
+    var noteText = document.createElement("span");
+    noteText.textContent = "minutes left, notify me.";
+
+    if (result.notifications.length > 0) {
+        document.querySelector("#notifications input[type=checkbox]").checked = true;
+
+        // Populate the div with the existing notification times.
+        var noteNode;
+        for (let noteTime of result.notifications) {
+            noteNode = document.createElement("input");
+            noteNode.setAttribute("type", "number");
+            noteNode.setAttribute("min", "1");
+            noteNode.setAttribute("value", noteTime);
+            document.querySelector("#notifications div").appendChild(noteNode);
+            document.querySelector("#notifications div").appendChild(noteText.cloneNode(true));
+        }
+    } else {
+        document.querySelector("#notifications input[type=checkbox]").checked = false;
+        document.querySelector("#notifications input[type=submit]").disabled = true;
+        document.querySelector("#notifications input[type=button]").disabled = true;
+
+        // Add the default, to-be-disabled notification
+        var defaultNote = document.createElement("input");
+        defaultNote.setAttribute("type", "number");
+        defaultNote.setAttribute("min", "1");
+        document.querySelector("#notification div").appendChild(defaultNote);
+        document.querySelector("#notification div").appendChild(noteText.cloneNode(false));
+
+        // Then disable it
+        document.querySelector("#notification input[type=number]").disabled = true;
+    }
+});
+
+/// Initialization and Setup
 document.addEventListener("DOMContentLoaded", function(e) {
     loadBlacklist();
     loadTimeout();
@@ -130,7 +165,6 @@ document.querySelector("#settings").addEventListener("submit", function(e) {
 });
 
 /// Disable select options if time is up for today
-
 function approveEdit() {
     return browser.storage.sync.get("hourglass")
         .then(result => {
