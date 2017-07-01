@@ -46,6 +46,28 @@ function sandTick() {
     browser.runtime.sendMessage({"timeRemaining": timeRemaining})
         .catch(error => { });   // If there's an error, the popup ain't open.
 
+    // Check if notifications need to be sent out, and send them if so.
+    var message = "";
+    switch (timeRemaining) {
+        case 15 * 60:
+            message = "You have 15 minutes left!";
+            break;
+        case 5 * 60:
+            message = "You have 5 minutes left!";
+            break;
+        case 1 * 60:
+            message = "You have 1 minute left!";
+            break;
+    }
+    if (message.length > 0) {
+        browser.notifications.create({
+            "type": "basic",
+            "iconUrl": browser.extension.getURL("icons/monastery.svg"),
+            "title": "Monastery Notice",
+            "message": message
+        });
+    }
+
     // Check if time is up, in which case redirect all tresspassers.
     if (timeRemaining <= 0) {
         browser.storage.sync.set({hourglass: 0});
