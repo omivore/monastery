@@ -126,22 +126,55 @@ browser.storage.sync.get("notifications").then(result => {
             document.querySelector("#notifications div").appendChild(noteNode);
             document.querySelector("#notifications div").appendChild(noteText.cloneNode(true));
         }
+
+        // Enable all relevant options
+        setNotifications(true);
     } else {
         document.querySelector("#notifications input[type=checkbox]").checked = false;
-        document.querySelector("#notifications input[type=submit]").disabled = true;
-        document.querySelector("#notifications input[type=button]").disabled = true;
 
         // Add the default, to-be-disabled notification
         var defaultNote = document.createElement("input");
         defaultNote.setAttribute("type", "number");
         defaultNote.setAttribute("min", "1");
-        document.querySelector("#notification div").appendChild(defaultNote);
-        document.querySelector("#notification div").appendChild(noteText.cloneNode(false));
+        defaultNote.setAttribute("value", "15");
+        document.querySelector("#notifications div").appendChild(defaultNote);
+        document.querySelector("#notifications div").appendChild(noteText.cloneNode(true));
 
-        // Then disable it
-        document.querySelector("#notification input[type=number]").disabled = true;
+        // Then disable all relevant options
+        setNotifications(false);
     }
 });
+// Rig up checkbox functionality
+document.querySelector("#notifications input[type=checkbox]").addEventListener("change", e => {
+    if (document.querySelector("#notifications input[type=checkbox]").checked) {
+        // Enable notifications settings
+        setNotifications(true);
+        saveNotifications();
+    } else {
+        // Disable notification settings
+        setNotifications(false);
+        // Clear the notifications settings
+        browser.storage.sync.set({notifications: []});
+    }
+});
+
+// Save all the settings currently set on the options page
+function saveNotifications() {
+    
+}
+
+function setNotifications(shouldBeEnabled) {
+        document.querySelector("#notifications input[type=submit]").disabled = !shouldBeEnabled;
+        document.querySelector("#notifications input[type=button]").disabled = !shouldBeEnabled;
+        document.querySelector("#notifications input[type=number]").disabled = !shouldBeEnabled;
+        if (shouldBeEnabled) {
+            document.querySelector("#notifications div span").classList.remove("notesDisabled");
+            document.querySelector("#notifications div p").classList.remove("notesDisabled");
+        }
+        else {
+            document.querySelector("#notifications div span").classList.add("notesDisabled");
+        }
+}
 
 /// Initialization and Setup
 document.addEventListener("DOMContentLoaded", function(e) {

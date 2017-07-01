@@ -49,6 +49,9 @@ p, span, h3 {
 #notifications span {
     margin-left: 10px;
 }
+#notifications .notesDisabled {
+    color: gray;
+}
 
 /* Disable Notice Styles */
 #disabledNotice {
