@@ -157,7 +157,7 @@ function saveNotifications() {
     var savedTimes = new Set();
     for (let noteTime of document.querySelectorAll('#notifications input[type=number]'))
         savedTimes.add(noteTime.value);
-    savedTimes = [...savedTimes].sort((left, right) => right - left);
+    savedTimes = [...savedTimes].filter(time => time >= 1).sort((left, right) => right - left);
     console.log("Saved times at " + savedTimes + " minute(s)");
     browser.storage.sync.set({notifications: savedTimes});
 }
