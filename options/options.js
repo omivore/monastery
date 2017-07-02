@@ -110,42 +110,27 @@ document.querySelector("#minutes").addEventListener("input", showEdited);
 
 // Load the notifications
 browser.storage.sync.get("notifications").then(result => {
-    var noteText = document.createElement("span");
-    noteText.textContent = "minutes left, notify me.";
+    let noticesExist = result.notifications.length > 0;
 
-    if (result.notifications.length > 0) {
-        document.querySelector("#notifications input[type=checkbox]").checked = true;
+    document.querySelector("#notifications input[type=checkbox]").checked = noticesExist;
+    var noticeNode;
+    var noteText;
+    // If there are notices, use the notification times, otherwise, use a default 15 minutes
+    for (let noteTime of (noticesExist) ? result.notifications : [15]) {
+        var noticeNode = document.createElement("input");
+        noticeNode.setAttribute("type", "number");
+        noticeNode.setAttribute("min", "1");
+        noticeNode.setAttribute("value", noteTime);
+        noticeNode.addEventListener("change", event => saveNotifications());
+        document.querySelector("#notifications div").appendChild(noticeNode);
 
-        // Populate the div with the existing notification times.
-        var noteNode;
-        for (let noteTime of result.notifications) {
-            noteNode = createNotifyBox(noteTime);
-            document.querySelector("#notifications div").appendChild(noteNode);
-            document.querySelector("#notifications div").appendChild(noteText.cloneNode(true));
-        }
-
-        // Enable all relevant options
-        setNotifications(true);
-    } else {
-        document.querySelector("#notifications input[type=checkbox]").checked = false;
-
-        // Add the default, to-be-disabled notification
-        let defaultNote = createNotifyBox(15);
-        document.querySelector("#notifications div").appendChild(defaultNote);
-        document.querySelector("#notifications div").appendChild(noteText.cloneNode(true));
-
-        // Then disable all relevant options
-        setNotifications(false);
+        noteText = document.createElement("span");
+        noteText.textContent = "minutes left, notify me.";
+        document.querySelector("#notifications div").appendChild(noteText);
     }
+    // Enable or disable the notifications area
+    setNotifications(noticesExist);
 });
-function createNotifyBox(defaultValue) {
-    var noteBox = document.createElement("input");
-    noteBox.setAttribute("type", "number");
-    noteBox.setAttribute("min", "1");
-    noteBox.setAttribute("value", defaultValue);
-    noteBox.addEventListener("change", event => saveNotifications());
-    return noteBox;
-}
 
 // Rig up checkbox functionality
 document.querySelector("#notifications input[type=checkbox]").addEventListener("change", e => {
