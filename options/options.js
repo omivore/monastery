@@ -165,6 +165,7 @@ function setNotifications(shouldBeEnabled) {
     }
     else {
         document.querySelector("#notifications div span").classList.add("notesDisabled");
+        document.querySelector("#notifications div p").classList.add("notesDisabled");
     }
 }
 
