@@ -154,9 +154,10 @@ document.querySelector("#notifications input[type=checkbox]").addEventListener("
 
 // Save all the settings currently set on the options page
 function saveNotifications() {
-    var savedTimes = [];
+    var savedTimes = new Set();
     for (let noteTime of document.querySelectorAll('#notifications input[type=number]'))
-        savedTimes.push(noteTime.value);
+        savedTimes.add(noteTime.value);
+    savedTimes = [...savedTimes].sort((left, right) => right - left);
     console.log("Saved times at " + savedTimes + " minute(s)");
     browser.storage.sync.set({notifications: savedTimes});
 }
