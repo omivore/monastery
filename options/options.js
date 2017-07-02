@@ -143,7 +143,12 @@ browser.storage.sync.get("notifications").then(result => {
         // Then disable all relevant options
         setNotifications(false);
     }
+}).then(result => {
+    // Whenever the notification time is changed, save the new settings
+    for (let timeBox of document.querySelectorAll('#notifications input[type=number]'))
+        timeBox.addEventListener("change", event => saveNotifications());
 });
+
 // Rig up checkbox functionality
 document.querySelector("#notifications input[type=checkbox]").addEventListener("change", e => {
     if (document.querySelector("#notifications input[type=checkbox]").checked) {
@@ -160,20 +165,24 @@ document.querySelector("#notifications input[type=checkbox]").addEventListener("
 
 // Save all the settings currently set on the options page
 function saveNotifications() {
-    
+    var savedTimes = [];
+    for (let noteTime of document.querySelectorAll('#notifications input[type=number]'))
+        savedTimes.push(noteTime.value);
+    console.log("Saved times at " + savedTimes + " minute(s)");
+    browser.storage.sync.set({notifications: savedTimes});
 }
 
 function setNotifications(shouldBeEnabled) {
-        document.querySelector("#notifications input[type=submit]").disabled = !shouldBeEnabled;
-        document.querySelector("#notifications input[type=button]").disabled = !shouldBeEnabled;
-        document.querySelector("#notifications input[type=number]").disabled = !shouldBeEnabled;
-        if (shouldBeEnabled) {
-            document.querySelector("#notifications div span").classList.remove("notesDisabled");
-            document.querySelector("#notifications div p").classList.remove("notesDisabled");
-        }
-        else {
-            document.querySelector("#notifications div span").classList.add("notesDisabled");
-        }
+    document.querySelector("#notifications input[type=submit]").disabled = !shouldBeEnabled;
+    document.querySelector("#notifications input[type=button]").disabled = !shouldBeEnabled;
+    document.querySelector("#notifications input[type=number]").disabled = !shouldBeEnabled;
+    if (shouldBeEnabled) {
+        document.querySelector("#notifications div span").classList.remove("notesDisabled");
+        document.querySelector("#notifications div p").classList.remove("notesDisabled");
+    }
+    else {
+        document.querySelector("#notifications div span").classList.add("notesDisabled");
+    }
 }
 
 /// Initialization and Setup
