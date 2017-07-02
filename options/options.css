@@ -38,7 +38,7 @@ p, span, h3 {
 }
 
 /* Notification Settings */
-#notifications input[type=submit], #notifications input[type=button] {
+#notifications input[type=button] {
     width: 70px;
     margin-top: 20px;
 }

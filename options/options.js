@@ -163,8 +163,8 @@ function saveNotifications() {
 }
 
 function setNotifications(shouldBeEnabled) {
-    document.querySelector("#notifications input[type=submit]").disabled = !shouldBeEnabled;
-    document.querySelector("#notifications input[type=button]").disabled = !shouldBeEnabled;
+    for (let button of document.querySelectorAll("#notifications input[type=button]"))
+        button.disabled = !shouldBeEnabled;
     for (let numInput of document.querySelectorAll("#notifications input[type=number]"))
         numInput.disabled = !shouldBeEnabled;
 
@@ -181,13 +181,12 @@ function setNotifications(shouldBeEnabled) {
 }
 
 // Add functionality for the add button
-document.querySelector('#notifications').addEventListener('submit', event => {
-    event.preventDefault();
+document.querySelector('#notifications input[value=Add]').addEventListener('click', event => {
     addNotifyEntry(15);
     saveNotifications();
 });
 // Add functionality for the remove button
-document.querySelector('#notifications input[type=button]').addEventListener('click', event => {
+document.querySelector('#notifications input[value=Remove]').addEventListener('click', event => {
     if (document.querySelectorAll('#notifications div div').length > 1) {
         document.querySelector('#notifications div')
             .removeChild(document.querySelector('#notifications div div:last-of-type'));
