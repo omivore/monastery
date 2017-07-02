@@ -1,7 +1,7 @@
 // background.js
 
 // Default to allowing one hour of time, that is, 60 mintues, in seconds.
-let timeAllowance = 60 * 60;
+let timeAllowance;
 
 var hourglass = null;
 var timeRemaining = timeAllowance;
@@ -47,26 +47,25 @@ function sandTick() {
         .catch(error => { });   // If there's an error, the popup ain't open.
 
     // Check if notifications need to be sent out, and send them if so.
-    var message = "";
-    switch (timeRemaining) {
-        case 15 * 60:
-            message = "You have 15 minutes left!";
-            break;
-        case 5 * 60:
-            message = "You have 5 minutes left!";
-            break;
-        case 1 * 60:
-            message = "You have 1 minute left!";
-            break;
-    }
-    if (message.length > 0) {
-        browser.notifications.create({
-            "type": "basic",
-            "iconUrl": browser.extension.getURL("icons/monastery.svg"),
-            "title": "Monastery Notice",
-            "message": message
-        });
-    }
+    browser.storage.sync.get('notifications').then(result => {
+        var message = "";
+        for (let time of result.notifications) {
+            if (timeRemaining == time * 60) {
+                message = "You have " + time + " " +
+                          ((time > 1) ? "minutes" : "minute") +
+                          " left!";
+                break;
+            }
+        }
+        if (message.length > 0) {
+            browser.notifications.create({
+                "type": "basic",
+                "iconUrl": browser.extension.getURL("icons/monastery.svg"),
+                "title": "Monastery Notice",
+                "message": message
+            });
+        }
+    });
 
     // Check if time is up, in which case redirect all tresspassers.
     if (timeRemaining <= 0) {
