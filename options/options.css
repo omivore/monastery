@@ -46,6 +46,9 @@ p, span, h3 {
     width: 50px;
     height: 25px;
 }
+#notifications div div {
+    margin: 10px 0 10px 0;
+}
 #notifications span {
     margin-left: 10px;
 }

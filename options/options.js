@@ -113,24 +113,30 @@ browser.storage.sync.get("notifications").then(result => {
     let noticesExist = result.notifications.length > 0;
 
     document.querySelector("#notifications input[type=checkbox]").checked = noticesExist;
-    var noticeNode;
-    var noteText;
     // If there are notices, use the notification times, otherwise, use a default 15 minutes
-    for (let noteTime of (noticesExist) ? result.notifications : [15]) {
-        var noticeNode = document.createElement("input");
-        noticeNode.setAttribute("type", "number");
-        noticeNode.setAttribute("min", "1");
-        noticeNode.setAttribute("value", noteTime);
-        noticeNode.addEventListener("change", event => saveNotifications());
-        document.querySelector("#notifications div").appendChild(noticeNode);
-
-        noteText = document.createElement("span");
-        noteText.textContent = "minutes left, notify me.";
-        document.querySelector("#notifications div").appendChild(noteText);
-    }
+    for (let noteTime of (noticesExist) ? result.notifications : [15])
+        addNotifyEntry(noteTime);
     // Enable or disable the notifications area
     setNotifications(noticesExist);
 });
+
+// Solely adds another notification nubmer input and span text to the notifications div
+function addNotifyEntry(noteTime) {
+    var noticeDiv = document.createElement('div');
+
+    var noticeNode = document.createElement("input");
+    noticeNode.setAttribute("type", "number");
+    noticeNode.setAttribute("min", "1");
+    noticeNode.setAttribute("value", noteTime);
+    noticeNode.addEventListener("change", event => saveNotifications());
+    noticeDiv.appendChild(noticeNode);
+
+    var noteText = document.createElement("span");
+    noteText.textContent = "minutes left, notify me.";
+    noticeDiv.appendChild(noteText);
+
+    document.querySelector("#notifications div").appendChild(noticeDiv);
+}
 
 // Rig up checkbox functionality
 document.querySelector("#notifications input[type=checkbox]").addEventListener("change", e => {
@@ -158,16 +164,35 @@ function saveNotifications() {
 function setNotifications(shouldBeEnabled) {
     document.querySelector("#notifications input[type=submit]").disabled = !shouldBeEnabled;
     document.querySelector("#notifications input[type=button]").disabled = !shouldBeEnabled;
-    document.querySelector("#notifications input[type=number]").disabled = !shouldBeEnabled;
+    for (let numInput of document.querySelectorAll("#notifications input[type=number]"))
+        numInput.disabled = !shouldBeEnabled;
+
     if (shouldBeEnabled) {
-        document.querySelector("#notifications div span").classList.remove("notesDisabled");
+        for (let paragraph of document.querySelectorAll("#notifications div span"))
+            paragraph.classList.remove("notesDisabled");
         document.querySelector("#notifications div p").classList.remove("notesDisabled");
     }
     else {
-        document.querySelector("#notifications div span").classList.add("notesDisabled");
+        for (let paragraph of document.querySelectorAll("#notifications div span"))
+            paragraph.classList.add("notesDisabled");
         document.querySelector("#notifications div p").classList.add("notesDisabled");
     }
 }
+
+// Add functionality for the add button
+document.querySelector('#notifications').addEventListener('submit', event => {
+    event.preventDefault();
+    addNotifyEntry(15);
+    saveNotifications();
+});
+// Add functionality for the remove button
+document.querySelector('#notifications input[type=button]').addEventListener('click', event => {
+    if (document.querySelectorAll('#notifications div div').length > 1) {
+        document.querySelector('#notifications div')
+            .removeChild(document.querySelector('#notifications div div:last-of-type'));
+        saveNotifications();
+    }
+});
 
 /// Initialization and Setup
 document.addEventListener("DOMContentLoaded", function(e) {
