@@ -119,10 +119,7 @@ browser.storage.sync.get("notifications").then(result => {
         // Populate the div with the existing notification times.
         var noteNode;
         for (let noteTime of result.notifications) {
-            noteNode = document.createElement("input");
-            noteNode.setAttribute("type", "number");
-            noteNode.setAttribute("min", "1");
-            noteNode.setAttribute("value", noteTime);
+            noteNode = createNotifyBox(noteTime);
             document.querySelector("#notifications div").appendChild(noteNode);
             document.querySelector("#notifications div").appendChild(noteText.cloneNode(true));
         }
@@ -133,21 +130,22 @@ browser.storage.sync.get("notifications").then(result => {
         document.querySelector("#notifications input[type=checkbox]").checked = false;
 
         // Add the default, to-be-disabled notification
-        var defaultNote = document.createElement("input");
-        defaultNote.setAttribute("type", "number");
-        defaultNote.setAttribute("min", "1");
-        defaultNote.setAttribute("value", "15");
+        let defaultNote = createNotifyBox(15);
         document.querySelector("#notifications div").appendChild(defaultNote);
         document.querySelector("#notifications div").appendChild(noteText.cloneNode(true));
 
         // Then disable all relevant options
         setNotifications(false);
     }
-}).then(result => {
-    // Whenever the notification time is changed, save the new settings
-    for (let timeBox of document.querySelectorAll('#notifications input[type=number]'))
-        timeBox.addEventListener("change", event => saveNotifications());
 });
+function createNotifyBox(defaultValue) {
+    var noteBox = document.createElement("input");
+    noteBox.setAttribute("type", "number");
+    noteBox.setAttribute("min", "1");
+    noteBox.setAttribute("value", defaultValue);
+    noteBox.addEventListener("change", event => saveNotifications());
+    return noteBox;
+}
 
 // Rig up checkbox functionality
 document.querySelector("#notifications input[type=checkbox]").addEventListener("change", e => {
