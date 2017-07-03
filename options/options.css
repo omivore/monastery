@@ -3,16 +3,19 @@ p, span, h3 {
 }
 
 /* Blacklisted Settings */
-#errorField {
+#sites select, #sites input[type=text] {
+    width: 255px;
+}
+#sites input[type=button], #sites input[type=submit] {
+    width: 100px;
+}
+#sites #errorField {
     margin-top: 1;
     color: red;
     font-style: italic;
 }
-#blacklist, #addition {
-    width: 400px;
-}
 
-/* Blocking Settgins */
+/* Blocking Settings */
 #blockTime input, #blockTime p{
     display: inline;
 }
@@ -20,15 +23,15 @@ p, span, h3 {
     width: 70px;
     text-align: center;
 }
-#saveState {
+#blockTime #saveState {
     font-size: 15px;
     font-style: italic;
     margin-left: 10px;
 }
-#saveState.edited {
+#blockTime #saveState.edited {
     color: red;
 }
-#saveState.saved {
+#blockTime #saveState.saved {
     color: green;
     animation: fadeOut 0.5s linear 0.5s 1 forwards;
 }
@@ -39,7 +42,7 @@ p, span, h3 {
 
 /* Notification Settings */
 #notifications input[type=button] {
-    width: 70px;
+    width: 105px;
     margin-top: 20px;
 }
 #notifications input[type=number] {
