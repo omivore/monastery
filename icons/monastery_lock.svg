@@ -15,7 +15,7 @@
    version="1.1"
    id="svg3686"
    inkscape:version="0.92.1 r15371"
-   sodipodi:docname="monastery.svg">
+   sodipodi:docname="monastery_lock.svg">
   <defs
      id="defs3680" />
   <sodipodi:namedview
@@ -31,9 +31,9 @@
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="1000"
-     inkscape:window-x="1920"
+     inkscape:window-width="1920"
+     inkscape:window-height="1056"
+     inkscape:window-x="0"
      inkscape:window-y="24"
      inkscape:window-maximized="1" />
   <metadata
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -58,7 +58,7 @@
        cx="104.69941"
        cy="83.443451"
        r="48.002975"
-       style="stroke-width:0.26458332" />
+       style="stroke-width:0.26458332;fill:#ff0000" />
     <path
        style="fill:#ffffff;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 103.86951,47.791067 6.4952,30.03214 25.93814,5.226901 -25.42481,6.996047 -6.39937,26.414805 L 97.916889,90.036559 75.013721,82.90221 97.543158,78.151959 Z"

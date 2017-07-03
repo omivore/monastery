@@ -32,8 +32,19 @@ function gatekeeper(event) {
 function isTresspassing() {
     return getTresspassing(result => {
         // If result is not empty, then is tresspassing.
-        if (result.length > 0) return true;
-        else return false;
+        if (result.length > 0) {
+            // If tresspassing, then show so in the extension icon.
+            browser.browserAction.setIcon({
+                    path: { 48: 'icons/monastery_lock.svg'},
+            });
+            return true;
+        } else {
+            // If not tresspassing, make sure icon is back to normal.
+            browser.browserAction.setIcon({
+                    path: { 48: 'icons/monastery.svg'},
+            });
+            return false;
+        }
     });
 }
 
