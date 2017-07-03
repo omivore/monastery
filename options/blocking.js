@@ -16,12 +16,12 @@ function saveTimeout() {
     browser.storage.sync.set({timeout: timeLeft});
 
     // Update status to saved
-    document.querySelector('#saveState').innerHTML = 'saved';
+    document.querySelector('#saveState').textContent = 'saved';
     document.querySelector('#saveState').classList = 'saved';
 }
 
 function showEdited() {
-    document.querySelector('#saveState').innerHTML = 'edited';
+    document.querySelector('#saveState').textContent = 'edited';
     document.querySelector('#saveState').classList = 'edited';
 }
 document.querySelector('#hours').addEventListener('input', showEdited);

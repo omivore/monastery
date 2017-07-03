@@ -7,13 +7,8 @@
     </head>
 
     <body>
-        <p id="disabledNotice" class="hidden">
-            Your time is up for today; some options can no longer be edited.
-            <br />
-            Please wait until tomorrow when you have more time.
-        </p>
         <form id="sites">
-            <h3>Blacklisted Sites</h3>
+            <h2>Blacklisted Sites</h2>
             <div>
                 <select multiple></select>
                 <input type="button" value="Remove">
@@ -26,25 +21,41 @@
             <p id="errorField"></p>
         </form>
         <form id="settings">
-            <h3>Blocking Settings</h3>
+            <h2>Blocking Settings</h2>
             <div id="blockTime">
+                <p>
+                    Amount of time permitted to spend
+                    <br />
+                    on blacklisted sites per day:
+                </p>
+                <br /><br /><br />
                 <input id="hours" type="number" min="0" max="23">
                 <p>Hours</p>
                 <input id="minutes" type="number" min="0" max="59">
                 <p>Minutes</p>
-                <input type="submit" value="Save">
-                <p id="saveState"></p>
+                <br /><br /><br />
+                <div>
+                    <p id="saveState"></p>
+                    <input type="submit" value="Save">
+                </div>
             </div>
         </form>
         <form id="notifications">
-            <h3>Notification Settings</h3>
+            <h2>Notification Settings</h2>
             <input type="checkbox"><span>Notify me when I'm almost out of time</span>
             <div>
-                <p>When there are:</p>
+                <p>Notify me when there remains:</p>
             </div>
             <input type="button" value="Add">
             <input type="button" value="Remove">
         </form>
+        <span id="stretch"></span>
+
+        <p id="disabledNotice" class="hidden">
+            Your time is up for today; some options can no longer be edited.
+            <br />
+            Please wait until tomorrow when you have more time.
+        </p>
 
         <script src="options.js"></script>
         <script src="blacklist.js"></script>

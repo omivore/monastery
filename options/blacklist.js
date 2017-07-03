@@ -68,6 +68,12 @@ function validateList(existList, addition) {
     }
 
     document.querySelector('#sites #errorField').textContent = errorText;
+    document.querySelector('#sites #errorField').classList.add('shown');
+    // Once the animation is done, remove the class
+    setTimeout(() => {
+        document.querySelector('#sites #errorField').textContent = '';
+        document.querySelector('#sites #errorField').classList.remove('shown');
+    }, 1000);
     return existList;
 }
 

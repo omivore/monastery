@@ -118,7 +118,7 @@ browser.storage.sync.get('timeout').then(result => {
     if (Object.keys(result).length == 0) {
         console.log('Setting default time allowance of one hour');
         browser.storage.sync.set({timeout: 60});
-        timeAllowance = 60 * 60;    // One hour in seconds.
+        timeAllowance = .5 * 60;    // One hour in seconds.
     } else {
         timeAllowance = result.timeout * 60;   // Convert minutes to seconds.
         console.log(`Using stored time allowance of ${result.timeout} minutes.`);

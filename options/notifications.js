@@ -27,7 +27,7 @@ function addNotifyEntry(noteTime) {
     noticeDiv.appendChild(noticeNode);
 
     var noteText = document.createElement('span');
-    noteText.textContent = 'minutes left, notify me.';
+    noteText.textContent = 'minutes left';
     noticeDiv.appendChild(noteText);
 
     document.querySelector('#notifications div').appendChild(noticeDiv);
