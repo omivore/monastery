@@ -77,7 +77,7 @@ function blockAll() {
         for (let tab of result) {
             browser.tabs.update(
                 tab.id,
-                {url: browser.extension.getURL('block_page.html')}
+                {url: browser.extension.getURL('pages/block_page.html')}
             );
         }
     });

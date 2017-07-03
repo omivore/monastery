@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+body {
+    padding: 30px;
+    padding-top: 10%;
+    background: #BCD;
+    text-align: center;
+}
+img {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+}
+p {
+    display: inline-block;
+    margin-left: 10px;
+    font-family: Roboto;
+    vertical-align: middle;
+}
