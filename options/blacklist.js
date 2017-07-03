@@ -3,14 +3,16 @@
 function loadBlacklist() {
     var select = document.querySelector('#sites select');
 
-    function showBlacklist(result) {
-        for (let i = 0; i < result.blacklist.length; i++)
-            select.appendChild(new Option(result.blacklist[i], result.blacklist[i]));
-    }
-
     while (select.hasChildNodes())
         select.removeChild(select.lastChild);
-    browser.storage.sync.get('blacklist').then(showBlacklist);
+
+    browser.storage.sync.get('blacklist').then(result => {
+        for (let i = 0; i < result.blacklist.length; i++)
+            select.appendChild(new Option(result.blacklist[i], result.blacklist[i]));
+
+        // Adjust size of multiple select form to list + 1, with min of 5 and max of 10
+        select.size = Math.max(5, Math.min(result.blacklist.length + 1, 9));
+    });
 }
 
 function appendBlacklist() {
