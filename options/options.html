@@ -15,12 +15,12 @@
         <form id="sites">
             <h3>Blacklisted Sites</h3>
             <div>
-                <select id="blacklist" multiple></select>
-                <button type="button">Remove</button>
+                <select multiple></select>
+                <input type="button" value="Remove">
             </div>
             <br>
             <div>
-                <input id="addition" type="text" placeholder="Add to blacklist..." autocomplete="off">
+                <input type="text" placeholder="Add to blacklist..." autocomplete="off">
                 <input type="submit" value="Add">
             </div>
             <p id="errorField"></p>
@@ -47,5 +47,8 @@
         </form>
 
         <script src="options.js"></script>
+        <script src="blacklist.js"></script>
+        <script src="blocking.js"></script>
+        <script src="notifications.js"></script>
     </body>
 </html>
