@@ -10,7 +10,7 @@
         }
     },
 
-    "description": "Monastery restricts your browsing session and blocks and limits time spent on a user-supplied blacklist. It can also provide a delay before loading a blacklisted page, so as to detach instant gratification from the site.",
+    "description": "Monastery restricts your browsing session and blocks and limits time spent on a user-supplied blacklist.",
     "homepage_url": "https://github.com/omivore/monastery",
     "icons": {
         "48": "icons/monastery.svg"
