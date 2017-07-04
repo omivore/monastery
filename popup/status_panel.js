@@ -9,7 +9,7 @@ function updateClock(secondsRemaining) {
     secondsRemaining %= 60;
 
     var seconds = (secondsRemaining < 10) ? `0${secondsRemaining}` : secondsRemaining;
-    document.querySelector('#timer').innerHTML = `${hours}:${minutes}:${seconds}`;
+    document.querySelector('#timer').textContent = `${hours}:${minutes}:${seconds}`;
 }
 
 document.querySelector('#settings').addEventListener('click',
