@@ -31,6 +31,7 @@ function gatekeeper(event) {
 
 function isTresspassing() {
     return getTresspassing(result => {
+
         // If result is not empty, then is tresspassing.
         if (result.length > 0) {
             // If tresspassing, then show so in the extension icon.
@@ -127,6 +128,21 @@ browser.storage.sync.get('notifications').then(result => {
     }
 });
 
+function createNewHourglass() {
+    console.log('Creating new hourglass');
+    // Get today's date and set the hourglass to expire in its last minutes.
+    var today = new Date(Date.now());
+    today.setHours(23);
+    today.setMinutes(59);
+    today.setSeconds(59);
+    today.setMilliseconds(999);
+    browser.storage.sync.set({hourglass: timeAllowance,
+                              hourglassExpiry: today});
+    timeRemaining = timeAllowance;
+    console.log(`Hourglass expires ${today.toString()}`);
+    setTimeout(createNewHourglass, today.valueOf() - Date.now().valueOf());
+}
+
 // Get and set the timeAllowance. If it doesn't exist, create it, defaulting to an hour.
 // Then create a timer if it doesn't exist. Once timer is established, add the gatekeeper.
 browser.storage.sync.get('timeout').then(result => {
@@ -142,17 +158,7 @@ browser.storage.sync.get('timeout').then(result => {
     browser.storage.sync.get(['hourglass', 'hourglassExpiry']).then(result => {
         // If there is no hourglass, OR if that hourglass has expired, make a new one.
         if (Object.keys(result).length == 0 || Date.now() > result.hourglassExpiry ) {
-            console.log('Creating new hourglass');
-            // Get today's date and set the hourglass to expire in its last minutes.
-            var today = new Date(Date.now());
-            today.setHours(23);
-            today.setMinutes(59);
-            today.setSeconds(59);
-            today.setMilliseconds(900);
-            browser.storage.sync.set({hourglass: timeAllowance,
-                                      hourglassExpiry: today});
-            timeRemaining = timeAllowance;
-            console.log(`Hourglass expires ${today.toString()}`);
+            createNewHourglass();
         } else {
             timeRemaining = result.hourglass;
             console.log(`Using stored hourglass with ${timeRemaining} seconds left.`);
