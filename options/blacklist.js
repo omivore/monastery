@@ -52,8 +52,8 @@ function updateBlacklist(modify) {
         var setter = browser.storage.sync.set({
             blacklist: newBlacklist
         });
+        console.log(`Storing new blacklist of ${newBlacklist}`);
         setter.then(result => loadBlacklist());
-        browser.runtime.sendMessage({reload: true});
     }
 
     browser.storage.sync.get('blacklist').then(updateList);

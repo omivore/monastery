@@ -47,8 +47,8 @@ function saveNotifications() {
     for (let noteTime of document.querySelectorAll('#notifications input[type=number]'))
         savedTimes.add(noteTime.value);
     savedTimes = [...savedTimes].filter(time => time >= 1).sort((left, right) => right - left);
-    console.log(`Saved times at ${savedTimes} minute(s)`);
     browser.storage.sync.set({notifications: savedTimes});
+    console.log(`Saved times at ${savedTimes} minute(s)`);
 }
 
 function setNotifications(shouldBeEnabled) {
@@ -68,6 +68,7 @@ function setNotifications(shouldBeEnabled) {
         document.querySelector('#notifications div p').classList.add('notesDisabled');
     }
     browser.storage.sync.set({notifyOn: shouldBeEnabled});
+    console.log(`Turned notifications ${(shouldBeEnabled) ? 'on' : 'off'}`);
 }
 
 // Add functionality for the add button

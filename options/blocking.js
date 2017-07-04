@@ -11,9 +11,12 @@ function loadTimeout() {
 }
 
 function saveTimeout() {
-    var timeLeft = document.querySelector('#hours').value * 60 +
-                   document.querySelector('#minutes').value;
+    var timeLeft = parseInt(document.querySelector('#hours').value) * 60 +
+                   parseInt(document.querySelector('#minutes').value);
+    // Set a minimum and maximum of 1 minute and 23 hours, 59 minutes
+    timeLeft = Math.max(1, Math.min((23 * 60) + 59, timeLeft));
     browser.storage.sync.set({timeout: timeLeft});
+    console.log(`Storing new timeout of ${timeLeft} minutes`);
 
     // Update status to saved
     document.querySelector('#saveState').textContent = 'saved';
