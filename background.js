@@ -51,6 +51,7 @@ function isTresspassing() {
 function sandTick() {
     // Decrement timeRemaining.
     timeRemaining -= 1;
+
     // Update the status panel.
     browser.runtime.sendMessage({'timeRemaining': timeRemaining})
         .catch(error => { });   // If there's an error, the popup ain't open.
@@ -82,6 +83,9 @@ function sandTick() {
         blockAll();
     }
 }
+// Occasionally update the hourglass so that the popup 'jumps' less of a
+// distance on opening. Update every arbitrary five seconds.
+setInterval(() => browser.storage.sync.set({hourglass: timeRemaining}), 5000);
 
 function blockAll() {
     getTresspassing(result => {
