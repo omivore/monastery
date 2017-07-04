@@ -2,16 +2,17 @@
 
 // Load the notifications
 function loadNotifications() {
-    browser.storage.sync.get('notifications').then(result => {
-        let noticesExist = result.notifications.length > 0;
+    browser.storage.sync.get(['notifications', 'notifyOn']).then(result => {
+        document.querySelector('#notifications input[type=checkbox]')
+            .checked = result.notifyOn;
 
-        document.querySelector('#notifications input[type=checkbox]').checked = noticesExist;
         // If there are notices, use those times, otherwise, use a default 15 minutes
-        for (let noteTime of (noticesExist) ? result.notifications : [15])
+        for (let noteTime of (result.notifications.length > 0)
+            ? result.notifications : [15])
             addNotifyEntry(noteTime);
 
         // Enable or disable the notifications area
-        setNotifications(noticesExist);
+        setNotifications(result.notifyOn);
     });
 }
 
@@ -35,16 +36,9 @@ function addNotifyEntry(noteTime) {
 
 // Rig up checkbox functionality
 document.querySelector('#notifications input[type=checkbox]').addEventListener('change', event => {
-    if (document.querySelector('#notifications input[type=checkbox]').checked) {
-        // Enable notifications settings
-        setNotifications(true);
-        saveNotifications();
-    } else {
-        // Disable notification settings
-        setNotifications(false);
-        // Clear the notifications settings
-        browser.storage.sync.set({notifications: []});
-    }
+    setNotifications(
+        document.querySelector('#notifications input[type=checkbox]').checked);
+    saveNotifications();
 });
 
 // Save all the settings currently set on the options page
@@ -73,6 +67,7 @@ function setNotifications(shouldBeEnabled) {
             paragraph.classList.add('notesDisabled');
         document.querySelector('#notifications div p').classList.add('notesDisabled');
     }
+    browser.storage.sync.set({notifyOn: shouldBeEnabled});
 }
 
 // Add functionality for the add button

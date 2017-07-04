@@ -115,11 +115,11 @@ browser.storage.sync.get('blacklist').then(result => {
     }
 });
 
-// Create default notifications list if it doesn't exist yet.
+// Create default notifications list and status if it doesn't exist yet.
 browser.storage.sync.get('notifications').then(result => {
     if (Object.keys(result).length == 0) {
         console.log('Creating default notification at 15 minutes');
-        browser.storage.sync.set({notifications: [15]});
+        browser.storage.sync.set({notifications: [15], notifyOn: true});
     }
 });
 
