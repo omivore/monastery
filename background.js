@@ -1,6 +1,5 @@
 // background.js
 
-let timeAllowance;  // Minutes allowed a day
 var timeRemaining;  // Seconds left on the hourglass
 var hourglass = null;
 
@@ -136,22 +135,23 @@ function createNewHourglass() {
     today.setMinutes(59);
     today.setSeconds(59);
     today.setMilliseconds(999);
-    browser.storage.sync.set({hourglass: timeAllowance,
-                              hourglassExpiry: today});
-    timeRemaining = timeAllowance;
+    browser.storage.sync.get('timeout').then(result => {
+        browser.storage.sync.set({hourglass: result.timeout * 60,
+                                  hourglassExpiry: today});
+        timeRemaining = result.timeout * 60;
+    });
+
     console.log(`Hourglass expires ${today.toString()}`);
     setTimeout(createNewHourglass, today.valueOf() - Date.now().valueOf());
 }
 
-// Get and set the timeAllowance. If it doesn't exist, create it, defaulting to an hour.
+// Get and set timeout. If it doesn't exist, create it, defaulting to an hour.
 // Then create a timer if it doesn't exist. Once timer is established, add the gatekeeper.
 browser.storage.sync.get('timeout').then(result => {
     if (Object.keys(result).length == 0) {
         console.log('Setting default time allowance of one hour');
-        browser.storage.sync.set({timeout: 60});
-        timeAllowance = 60 * 60;    // One hour in seconds.
+        browser.storage.sync.set({timeout: 1});
     } else {
-        timeAllowance = result.timeout * 60;   // Convert minutes to seconds.
         console.log(`Using stored time allowance of ${result.timeout} minutes.`);
     }
 }).then(result => {
