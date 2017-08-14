@@ -7,7 +7,7 @@
     </head>
 
     <body>
-        <form id="sites">
+        <form id="blacklist" class="sitelist">
             <h2>Blacklisted Sites</h2>
             <div>
                 <select multiple></select>
@@ -18,7 +18,7 @@
                 <input type="text" placeholder="Add to blacklist..." autocomplete="off">
                 <input type="submit" value="Add">
             </div>
-            <p id="errorField"></p>
+            <p class="errorField"></p>
         </form>
         <form id="settings">
             <h2>Blocking Settings</h2>
@@ -49,6 +49,19 @@
             <input type="button" value="Add">
             <input type="button" value="Remove">
         </form>
+        <form id="whitelist" class="sitelist">
+            <h2>Whitelisted Sites</h2>
+            <div>
+                <select multiple></select>
+                <input type="button" value="Remove">
+            </div>
+            <br>
+            <div>
+                <input type="text" placeholder="Add to whitelist..." autocomplete="off">
+                <input type="submit" value="Add">
+            </div>
+            <p class="errorField"></p>
+        </form>
         <span id="stretch"></span>
 
         <p id="disabledNotice" class="hidden">
@@ -58,7 +71,7 @@
         </p>
 
         <script src="options.js"></script>
-        <script src="blacklist.js"></script>
+        <script src="sitelist.js"></script>
         <script src="blocking.js"></script>
         <script src="notifications.js"></script>
     </body>

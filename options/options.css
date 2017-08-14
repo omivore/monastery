@@ -3,7 +3,7 @@ p, h2, span {
     font-family: "Fira Sans", Arial, sans-serif;
 }
 body {
-    padding: 0 5% 0 5%;
+    padding: 0 2% 0 2%;
     text-align: justify;
 }
 form {
@@ -19,19 +19,19 @@ form {
     to {opacity: 0;}
 }
 
-/* Blacklisted Settings */
-#sites select, #sites input[type=text] {
+/* Blacklisted And Whitelisted Settings */
+.sitelist select, .sitelist input[type=text] {
     width: 255px;
 }
-#sites input[type=button], #sites input[type=submit] {
+.sitelist input[type=button], .sitelist input[type=submit] {
     width: 100px;
 }
-#sites #errorField {
+.sitelist .errorField {
     margin-top: 5px;
     color: red;
     font-style: italic;
 }
-#sites #errorField.shown {
+.sitelist .errorField.shown {
     animation: fadeOut 0.5s linear 0.5s 1 forwards;
 }
 
