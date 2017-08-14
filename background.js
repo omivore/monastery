@@ -30,7 +30,6 @@ function gatekeeper(event) {
 
 function isTresspassing() {
     return getTresspassing(result => {
-
         // If result is not empty, then is tresspassing.
         if (result.length > 0) {
             // If tresspassing, then show so in the extension icon.
@@ -99,16 +98,41 @@ function blockAll() {
 }
 
 function getTresspassing(process) {
-    return browser.storage.sync.get('blacklist')
-        .then(result => {
-            var urls = [];
-            for (let site of result.blacklist) {
-                urls.push('*://*.' + site + '/*');
-                urls.push('*://' + site + '/*');
-            }
-            return browser.tabs.query({url: urls, active: true});
-        })
-        .then(process);
+    // Grab blacklist
+    return browser.storage.sync.get("blacklist").then(result => {
+        // Process blacklist
+        var urls = [];
+        for (let site of result.blacklist) {
+            urls.push('*://*.' + site + '/*');
+            urls.push('*://' + site + '/*');
+        }
+
+        // Apply blacklist
+        return browser.tabs.query({url: urls, active: true}).then(blacklisted => {
+
+            // Grab whitelist
+            return browser.storage.sync.get("whitelist").then(result => {
+                // Process whitelist
+                urls = [];  // Clear urls array for reuse
+                for (let site of result.whitelist) {
+                    urls.push('*://*.' + site + '/*');
+                    urls.push('*://' + site + '/*');
+                }
+
+                // Apply whitelist
+                return browser.tabs.query({url:urls, active: true}).then(whitelisted => {
+                    return blacklisted.filter(blackSite => {
+                        for (let whiteSite of whitelisted)
+                            // If a whitelisted site is on the blacklist,
+                            // return false to remove it from the blacklist.
+                            if (blackSite.id == whiteSite.id) return false;
+                        return true;
+                    });
+                });
+            });
+        });
+    })
+    .then(process);
 }
 
 // Create empty blacklist if it doesn't exist yet.
@@ -116,6 +140,14 @@ browser.storage.sync.get('blacklist').then(result => {
     if (Object.keys(result).length == 0) {
         console.log('Creating empty blacklist');
         browser.storage.sync.set({blacklist: []});
+    }
+});
+
+// Create empty whitelist if it doesn't exist yet.
+browser.storage.sync.get('whitelist').then(result => {
+    if (Object.keys(result).length == 0) {
+        console.log('Creating empty whitelist');
+        browser.storage.sync.set({whitelist: []});
     }
 });
 
@@ -150,7 +182,7 @@ function createNewHourglass() {
 browser.storage.sync.get('timeout').then(result => {
     if (Object.keys(result).length == 0) {
         console.log('Setting default time allowance of one hour');
-        browser.storage.sync.set({timeout: 1});
+        browser.storage.sync.set({timeout: 60});
     } else {
         console.log(`Using stored time allowance of ${result.timeout} minutes.`);
     }
