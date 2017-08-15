@@ -8,6 +8,7 @@ body {
 }
 form {
     display: inline-block;
+	width: 370px;
     vertical-align: top;
 }
 #stretch {
@@ -33,6 +34,13 @@ form {
 }
 .sitelist .errorField.shown {
     animation: fadeOut 0.5s linear 0.5s 1 forwards;
+}
+
+.infotext {
+	text-align: left;
+	border: 2px solid goldenrod;
+	border-radius: 5px;
+	padding: 3px;
 }
 
 /* Blocking Settings */
