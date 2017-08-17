@@ -19,6 +19,7 @@ function loadNotifications() {
 // Solely adds another notification nubmer input and span text to the notifications div
 function addNotifyEntry(noteTime) {
     var noticeDiv = document.createElement('div');
+    noticeDiv.classList.add('notifyTime');
 
     var noticeNode = document.createElement('input');
     noticeNode.setAttribute('type', 'number');
@@ -31,7 +32,7 @@ function addNotifyEntry(noteTime) {
     noteText.textContent = 'minutes left';
     noticeDiv.appendChild(noteText);
 
-    document.querySelector('#notifications div').appendChild(noticeDiv);
+    document.querySelector('#notifications #notifyTimes').appendChild(noticeDiv);
 }
 
 // Rig up checkbox functionality

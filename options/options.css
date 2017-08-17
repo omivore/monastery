@@ -2,22 +2,19 @@
 p, h2, span {
     font-family: "Fira Sans", Arial, sans-serif;
 }
-body {
-    padding: 0 2% 0 2%;
-    text-align: justify;
-}
-form {
-    display: inline-block;
-	width: 370px;
-    vertical-align: top;
-}
-#stretch {
-    display: inline-block;
-    width: 100%;
-}
 @keyframes fadeOut {
     from {opacity: 1;}
     to {opacity: 0;}
+}
+
+/* Setting structures */
+#settingsFlexer {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+}
+form {
+    display: inline-block;
 }
 
 /* Blacklisted And Whitelisted Settings */
@@ -25,7 +22,7 @@ form {
     width: 255px;
 }
 .sitelist input[type=button], .sitelist input[type=submit] {
-    width: 100px;
+    width: 90px;
 }
 .sitelist .errorField {
     margin-top: 5px;
@@ -37,10 +34,12 @@ form {
 }
 
 .infotext {
-	text-align: left;
-	border: 2px solid goldenrod;
-	border-radius: 5px;
-	padding: 3px;
+    width: 245px;
+    text-align: left;
+    border: 2px solid goldenrod;
+    border-radius: 5px;
+    padding: 3px;
+    font-size: 12px;
 }
 
 /* Blocking Settings */
@@ -74,6 +73,9 @@ form {
 }
 
 /* Notification Settings */
+/*#settings #notifications {
+    width: 320px;
+}*/
 #notifications input[type=button] {
     width: 105px;
     margin-top: 20px;
@@ -82,10 +84,17 @@ form {
     width: 50px;
     height: 25px;
 }
-#notifications div div {
-    margin: 10px 0 10px 0;
+#notifications #checkboxSwitch {
+    display: flex;
 }
-#notifications span {
+#notifications #checkboxSwitch span {
+    display: block;
+    margin-left: 10px;
+}
+#notifications .notifyTime {
+    padding: 10px 0 10px;
+}
+#notifications .notifyTime span {
     margin-left: 10px;
 }
 #notifications .notesDisabled {
