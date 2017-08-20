@@ -48,7 +48,17 @@ document.querySelector('#minutes').addEventListener('input', showEdited);
 document.addEventListener('DOMContentLoaded', event => loadTimeout());
 document.querySelector('#settings').addEventListener('submit', event => {
     event.preventDefault();
-    approveEdit().then(approved => {
-        if (approved) saveTimeout(getNewTimeout());
+
+    // Before considering approval: if lowering the timeout, it's permitted
+    browser.storage.sync.get('timeout').then(result => {
+        let newTimeout = getNewTimeout();
+        if (result.timeout >= newTimeout)
+            saveTimeout(newTimeout);
+        else {
+            // If raising the timeout, *then* see if it's permitted
+            approveEdit().then(approved => {
+                if (approved) saveTimeout(getNewTimeout());
+            });
+        }
     });
 });
