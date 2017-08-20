@@ -2,7 +2,7 @@
 
     "manifest_version": 2,
     "name": "Monastery",
-    "version": "1.0.1",
+    "version": "1.2.0",
     "applications": {
         "gecko": {
             "id": "monastery@omivore.com",
