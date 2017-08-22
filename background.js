@@ -169,11 +169,12 @@ function createNewHourglass() {
     today.setMilliseconds(999);
     browser.storage.sync.get('timeout').then(result => {
         browser.storage.sync.set({hourglass: result.timeout * 60,
-                                  hourglassExpiry: today});
+                                  hourglassExpiry: today.getTime()});
         timeRemaining = result.timeout * 60;
     });
 
     console.log(`Hourglass expires ${today.toString()}`);
+    console.log(`Hourglass refresh in ${today.valueOf() - Date.now().valueOf()} seconds`);
     setTimeout(createNewHourglass, today.valueOf() - Date.now().valueOf());
 }
 
@@ -189,7 +190,7 @@ browser.storage.sync.get('timeout').then(result => {
 }).then(result => {
     browser.storage.sync.get(['hourglass', 'hourglassExpiry']).then(result => {
         // If there is no hourglass, OR if that hourglass has expired, make a new one.
-        if (Object.keys(result).length == 0 || Date.now() > result.hourglassExpiry ) {
+        if (Object.keys(result).length == 0 || new Date(Date.now()) > new Date(result.hourglassExpiry)) {
             createNewHourglass();
         } else {
             timeRemaining = result.hourglass;

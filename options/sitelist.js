@@ -44,7 +44,7 @@ function removeSitelist(sitelist) {
             // Subtract the number of already removed elements due to shortened array.
             list.splice(removal[i] - i, 1);
         }
-        return blacklist;
+        return list;
     });
 }
 
