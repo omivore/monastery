@@ -137,7 +137,7 @@ function getTresspassing(process) {
 
 // Create empty blacklist if it doesn't exist yet.
 browser.storage.sync.get('blacklist').then(result => {
-    if (Object.keys(result).length == 0) {
+    if (!result.hasOwnProperty('blacklist')) {
         console.log('Creating empty blacklist');
         browser.storage.sync.set({blacklist: []});
     }
@@ -145,7 +145,7 @@ browser.storage.sync.get('blacklist').then(result => {
 
 // Create empty whitelist if it doesn't exist yet.
 browser.storage.sync.get('whitelist').then(result => {
-    if (Object.keys(result).length == 0) {
+    if (!result.hasOwnProperty('whitelist')) {
         console.log('Creating empty whitelist');
         browser.storage.sync.set({whitelist: []});
     }
@@ -153,7 +153,7 @@ browser.storage.sync.get('whitelist').then(result => {
 
 // Create default notifications list and status if it doesn't exist yet.
 browser.storage.sync.get('notifications').then(result => {
-    if (Object.keys(result).length == 0) {
+    if (!result.hasOwnProperty('notifications')) {
         console.log('Creating default notification at 15 minutes');
         browser.storage.sync.set({notifications: [15], notifyOn: true});
     }
@@ -181,16 +181,17 @@ function createNewHourglass() {
 // Get and set timeout. If it doesn't exist, create it, defaulting to an hour.
 // Then create a timer if it doesn't exist. Once timer is established, add the gatekeeper.
 browser.storage.sync.get('timeout').then(result => {
-    if (Object.keys(result).length == 0) {
+    if (!result.hasOwnProperty('timeout')) {
         console.log('Setting default time allowance of one hour');
-        browser.storage.sync.set({timeout: 60});
+        browser.storage.sync.set({timeout: 1});
     } else {
         console.log(`Using stored time allowance of ${result.timeout} minutes.`);
     }
 }).then(result => {
     browser.storage.sync.get(['hourglass', 'hourglassExpiry']).then(result => {
         // If there is no hourglass, OR if that hourglass has expired, make a new one.
-        if (Object.keys(result).length == 0 || new Date(Date.now()) > new Date(result.hourglassExpiry)) {
+        if (!result.hasOwnProperty('hourglass') ||
+            Date.now() > result.hourglassExpiry) {
             createNewHourglass();
         } else {
             timeRemaining = result.hourglass;
