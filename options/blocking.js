@@ -15,7 +15,7 @@ function getNewTimeout() {
                    parseInt(document.querySelector('#minutes').value);
 
     // Set a minimum and maximum of 1 minute and 23 hours, 59 minutes
-    newTimeout = Math.max(1, Math.min((23 * 60) + 59, newTimeout));
+    newTimeout = Math.max(0, Math.min((23 * 60) + 59, newTimeout));
     return newTimeout;
 }
 
