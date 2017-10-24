@@ -159,6 +159,14 @@ browser.storage.sync.get('notifications').then(result => {
     }
 });
 
+// Create non-used delay page if it doesn't exist yet.
+browser.storage.sync.get('delays').then(result => {
+    if (!result.hasOwnProperty('delays')) {
+        console.log('Creating default delay page of 0 minutes');
+        browser.storage.sync.set({delays: 30, delayOn: false});
+    }
+});
+
 function createNewHourglass() {
     console.log('Creating new hourglass');
     // Get today's date and set the hourglass to expire in its last minutes.
