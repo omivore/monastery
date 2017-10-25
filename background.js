@@ -4,11 +4,16 @@ var timeRemaining;  // Seconds left on the hourglass
 var hourglass = null;
 
 function gatekeeper(event) {
-    browser.storage.sync.get('hourglass').then(result => {
+    browser.storage.sync.get(['hourglass', 'delays', 'delayOn']).then(result => {
         if (result.hourglass != 0) {    // Permitted Stage
             isTresspassing().then(tresspass => {
                 if (tresspass) {
-                    // Start or continue timer
+                    // If delay is on, go through delay phase before timer
+                    if (result.delayOn) {      // TODO: && !pastDelay) {
+                        delay(result.delays);
+                    }
+
+                    // Otherwise, start or continue timer
                     if (!hourglass) hourglass = setInterval(sandTick, 1000);
                 } else {
                     // Stop timer and update hourglass
@@ -97,6 +102,27 @@ function blockAll() {
     });
 }
 
+function delay(delayTime) {
+    getTresspassing(result => {
+        for (let tab of result) {
+            browser.tabs.update(
+                tab.id,
+                {url: browser.extension.getURL('pages/delay_page.html')}
+            ).then(setDelay => {
+                browser.tabs.executeScript(
+                    setDelay.id,
+                    {code: "var delay = " + delayTime + ";"}
+                ).then(enableDelay => {
+                    browser.tabs.executeScript(
+                        enableDelay.id,
+                        {file: "/pages/delay_page.js"}
+                    );
+                });
+            });
+        }
+    });
+}
+
 function getTresspassing(process) {
     // Grab blacklist
     return browser.storage.sync.get("blacklist").then(result => {
@@ -159,9 +185,9 @@ browser.storage.sync.get('notifications').then(result => {
     }
 });
 
-// Create non-used delay page if it doesn't exist yet.
-browser.storage.sync.get('delays').then(result => {
-    if (!result.hasOwnProperty('delays')) {
+// Create unused delay page if it doesn't exist yet.
+browser.storage.sync.get(['delays', 'delayOn']).then(result => {
+    if (!result.hasOwnProperty('delays') || !result.hasOwnProperty('delayOn')) {
         console.log('Creating default delay page of 0 minutes');
         browser.storage.sync.set({delays: 30, delayOn: false});
     }
