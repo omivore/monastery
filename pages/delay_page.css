@@ -3,6 +3,7 @@ body {
     padding: 30px;
     padding-top: 10%;
     background: #F9E619;
+    font-family: Roboto;
     text-align: center;
 }
 img {
@@ -14,6 +15,9 @@ img {
 p {
     display: inline-block;
     margin-left: 10px;
-    font-family: Roboto;
+    line-height: 1.2;
     vertical-align: middle;
+}
+h3 {
+    display: inline-block;
 }
