@@ -101,6 +101,29 @@ form {
     color: gray;
 }
 
+/* Delay Settings */
+#delays input[type=button] {
+    width: 105px;
+    margin-top: 20px;
+}
+#delays input[type=number] {
+    width: 60px;
+    height: 25px;
+}
+#delays #delaySwitch {
+    display: flex;
+}
+#delays #delaySwitch span {
+    display: block;
+    margin-left: 10px;
+}
+#delays #delayLength span {
+    margin-left: 10px;
+}
+#delays .delayDisabled {
+    color: gray;
+}
+
 /* Disable Notice Styles */
 #disabledNotice {
     color: red;
