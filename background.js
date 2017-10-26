@@ -2,6 +2,7 @@
 
 var timeRemaining;  // Seconds left on the hourglass
 var hourglass = null;
+var passedDelay = [];
 
 function gatekeeper(event) {
     browser.storage.sync.get(['hourglass', 'delays', 'delayOn']).then(result => {
@@ -9,7 +10,7 @@ function gatekeeper(event) {
             isTresspassing().then(tresspass => {
                 if (tresspass) {
                     // If delay is on, go through delay phase before timer
-                    if (result.delayOn) {      // TODO: && !pastDelay) {
+                    if (result.delayOn) {
                         delay(result.delays);
                     }
 
@@ -106,8 +107,9 @@ function delay(delayTime) {
     getTresspassing(result => {
         for (let tab of result) {
             // Let through all who went through this trial already
-            if (tab.id in passedDelay) {
+            if (passedDelay.includes(tab.id)) {
                 if (!hourglass) hourglass = setInterval(sandTick, 1000);
+                return;
             }
 
             // Otherwise subject them to the trial!
@@ -129,6 +131,10 @@ function delay(delayTime) {
         }
     });
 }
+
+browser.runtime.onMessage.addListener(message => {
+    passedDelay.push(message.newPassedDelay);
+});
 
 function getTresspassing(process) {
     // Grab blacklist

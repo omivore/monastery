@@ -8,8 +8,8 @@ function beginDelay(delayTime, destinationURL) {
             // Once delay is done, add this tab to the passedDelay list
             browser.tabs.update(
                 {url: destinationURL}
-            ).then(() => {
-                browser.runtime.sendMessage({'newPassedDelay': newTab.id});
+            ).then(tab => {
+                browser.runtime.sendMessage({'newPassedDelay': tab.id});
             });
         }, delayTime * 1000);
     }
