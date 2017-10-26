@@ -105,18 +105,25 @@ function blockAll() {
 function delay(delayTime) {
     getTresspassing(result => {
         for (let tab of result) {
-            browser.tabs.update(
-                tab.id,
-                {url: browser.extension.getURL('pages/delay_page.html')}
-            ).then(setDelay => {
-                browser.tabs.executeScript(
-                    setDelay.id,
-                    {code: "var delay = " + delayTime + ";"}
-                ).then(enableDelay => {
-                    browser.tabs.executeScript(
-                        enableDelay.id,
-                        {file: "/pages/delay_page.js"}
-                    );
+            // Let through all who went through this trial already
+            if (tab.id in passedDelay) {
+                if (!hourglass) hourglass = setInterval(sandTick, 1000);
+            }
+
+            // Otherwise subject them to the trial!
+            let destination = tab.url;
+            browser.tabs.update(tab.id, {
+                url: "/pages/delay_page.html"
+            }).then(() => {
+                browser.tabs.onUpdated.addListener(function delayListen(tabId, changeInfo, tab) {
+                    if (tabId == tab.id &&
+                        changeInfo.hasOwnProperty('status') &&
+                        changeInfo.status == "complete") {
+                        browser.tabs.executeScript(tab.id, {
+                            code: `beginDelay(${delayTime}, "${destination}");`
+                        });
+                        browser.tabs.onUpdated.removeListener(delayListen);
+                    }
                 });
             });
         }
