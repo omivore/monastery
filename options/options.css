@@ -107,7 +107,7 @@ form {
     margin-top: 20px;
 }
 #delays input[type=number] {
-    width: 50px;
+    width: 60px;
     height: 25px;
 }
 #delays #delaySwitch {
