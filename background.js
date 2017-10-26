@@ -122,7 +122,7 @@ function delay(delayTime) {
                         changeInfo.hasOwnProperty('status') &&
                         changeInfo.status == "complete") {
                         browser.tabs.executeScript(tab.id, {
-                            code: `beginDelay(${delayTime}, "${destination}");`
+                            code: `initialize(${delayTime}, "${destination}");`
                         });
                         browser.tabs.onUpdated.removeListener(delayListen);
                     }
