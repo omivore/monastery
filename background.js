@@ -141,7 +141,7 @@ function updateBlockgroup(blockgroup) {
 function blockTab(tab) {
     browser.tabs.update(
         tab.id,
-        {url: browser.extension.getURL('pages/block_page.html')}
+        {url: browser.extension.getURL('pages/block.html')}
     );
 }
 
@@ -153,12 +153,12 @@ function setIcon(state) {
     switch (state) {
         case setIcon.State.blocking:
             browser.browserAction.setIcon({
-                path: { 48: 'icons/monastery_lock.svg' },
+                path: { 48: 'icons/lock.svg' },
             });
             break;
         case setIcon.State.delay:
             browser.browserAction.setIcon({
-                path: { 48: 'icons/monastery_delay.svg' },
+                path: { 48: 'icons/delay.svg' },
             });
             break;
         default:
