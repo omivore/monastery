@@ -81,20 +81,19 @@ function Hourglass(allottedTime) {
         isActive: false
     };
 }
-function startHourglass(timer) {
-    console.log("Starting hourglass");
+function startHourglass(blockgroup) {
+    console.log("Starting hourglass for blockgroup " + blockgroup.id);
     window.clearInterval(hourglass);
     hourglass = window.setInterval(() => {
-        timer.timeLeft -= 1;
-        tick(timer);
+        tick(blockgroup);
     }, 1000);
 
-    timer.isActive = true;
+    blockgroup.hourglass.isActive = true;
 };
-function stopHourglass(timer) {
-    console.log("Stopping hourglass");
+function stopHourglass(blockgroup) {
+    console.log("Stopping current hourglass");
     window.clearInterval(hourglass);
-    timer.isActive = false;
+    blockgroup.hourglass.isActive = false;
 }
 
 // Processing functions
@@ -124,8 +123,19 @@ function matchers(urls) {
     return matchers;
 };
 
-function tick(timer) {
-    console.log(timer);
+function tick(blockgroup) {
+    blockgroup.hourglass.timeLeft -= 1;
+    console.log(blockgroup);
+    updateBlockgroup(blockgroup);
+}
+
+function updateBlockgroup(blockgroup) {
+    browser.storage.local.get('blockgroups').then(result => {
+        result.blockgroups[blockgroup.id] = blockgroup;
+        browser.storage.local.set({
+            blockgroups: result.blockgroups
+        });
+    });
 }
 
 function blockTab(tab) {
@@ -179,7 +189,7 @@ function gatekeeper(event) {
                     if (blockgroup.delay.isActivated) {
                         if (delayed.includes(active.id)) {
                             setIcon(setIcon.State.blocking);
-                            startHourglass(blockgroup.hourglass);
+                            startHourglass(blockgroup);
                         } else {
                             setIcon(setIcon.State.delay);
                             delayTab(active);
@@ -187,14 +197,14 @@ function gatekeeper(event) {
                     } else {
                         if (blockgroup.hourglass.timeLeft > 0) {
                             setIcon(setIcon.State.blocking);
-                            startHourglass(blockgroup.hourglass);
+                            startHourglass(blockgroup);
                         } else blockTab(active);
                     }
                     return;
                 } else {
                     // The current page is innocent of *this* blockgroup
                     setIcon(setIcon.State.neutral);
-                    stopHourglass(blockgroup.hourglass);
+                    stopHourglass(blockgroup);
                 }
             });
         }
@@ -223,7 +233,7 @@ browser.tabs.onActivated.addListener((event) => {
 
 // Test blockgroups
 //console.log("test");
-let testBlock = Blockgroup(["reddit.com", "facebook.com"], 1, Notifications([], false), Delay(10, false));
+let testBlock = Blockgroup(["reddit.com", "facebook.com"], 12, Notifications([], false), Delay(10, false));
 //console.log(testBlock);
 //console.log("thing ");
 //console.log(thing);
@@ -233,3 +243,10 @@ browser.storage.local.set({blockgroups: {
 browser.storage.local.get('blockgroups').then(r => {
     console.log(r.blockgroups);
 });
+// Wait a bit then set it again bc the intialization blocks run afterwards and
+// clear the blockgroups thing
+setTimeout(() => {
+    browser.storage.local.set({blockgroups: {
+        [testBlock.id]: testBlock
+    }});
+}, 5000);
