@@ -21,66 +21,43 @@ browser.storage.local.get(['blockgroups', 'whitelist']).then(vars => {
 // Declare objects
 /**
  * Creates a Blockgroup data structure
+ * id is a unique identifier to make the storage blockgroups mutable
  * blacklist is a list of URL strings to be blocked
  * allottedTime is an integer amount of minutes between 0 and 24 * 60
- * notifications is a Notifications object of if and when alerts should happen
+ * notifications is a Notifications objectof if and when alerts should happen
  *      for this Blockgroup
  * delay is a Delay object associated with this Blockgroup
  * hourglass is the Hourglass object associated with this Blockgroup
  */
-function Blockgroup(blacklist, allottedTime, notifications, delay) {
+function Blockgroup(blacklist, allottedTime,
+                    notifications, isNotificationsActive,
+                    delay, isDelayActive) {
     return {
         id: Blockgroup.nextId(),
         blacklist: blacklist,
         allottedTime: allottedTime,
-        notifications: notifications,
-        delay: delay,
-        hourglass: Hourglass(allottedTime)
+        notifications: {
+            notifications,
+            isNotificationsActive
+        },
+        delay: {
+            notifications,
+            isNotificationsActive
+        },
+        hourglass: {
+            allottedTime: allottedTime,
+            timeLeft: allottedTime,
+            isActive: false
+        }
     };
 }
+// Give each new blockgroup an incrementing id; never use the same one
 Blockgroup.currentId = 0;
 Blockgroup.nextId = () => {
     Blockgroup.currentId += 1;
     return Blockgroup.currentId - 1;
 };
 
-/**
- * Creates a Notifications object
- * notifications is a list of integer times remaining for when alerts happen
- * isActivated is a boolean representing whether notifications are turned on
- */
-function Notifications(notifications, isActivated) {
-    return {
-        notifications: notifications,
-        isActivated: isActivated
-    };
-}
-
-/**
- * Creates a Delay object
- * delay is an integer amount of seconds > 0 for how long a delay should be
- * isActivated is a boolean representing whether delay is turned on
- */
-function Delay(delay, isActivated) {
-    return {
-        delay: delay,
-        isActivated: isActivated
-    };
-}
-
-/**
- * Creates Hourglass object
- * allottedTime is the starting amount of time for this hourglass
- * timeLeft is the amount of time left until the hourglass expires
- * isActive is a boolean of whether the hourglass is running or not
- */
-function Hourglass(allottedTime) {
-    return {
-        allottedTime: allottedTime,
-        timeLeft: allottedTime,
-        isActive: false
-    };
-}
 function startHourglass(blockgroup) {
     console.log("Starting hourglass for blockgroup " + blockgroup.id);
     window.clearInterval(hourglass);
@@ -233,7 +210,7 @@ browser.tabs.onActivated.addListener((event) => {
 
 // Test blockgroups
 //console.log("test");
-let testBlock = Blockgroup(["reddit.com", "facebook.com"], 12, Notifications([], false), Delay(10, false));
+let testBlock = Blockgroup(["reddit.com", "facebook.com"], 12, [], false, 10, false);
 //console.log(testBlock);
 //console.log("thing ");
 //console.log(thing);
