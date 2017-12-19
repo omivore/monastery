@@ -30,6 +30,7 @@ browser.storage.local.get(['blockgroups', 'whitelist']).then(vars => {
  */
 function Blockgroup(blacklist, allottedTime, notifications, delay) {
     return {
+        id: Blockgroup.nextId(),
         blacklist: blacklist,
         allottedTime: allottedTime,
         notifications: notifications,
@@ -37,6 +38,11 @@ function Blockgroup(blacklist, allottedTime, notifications, delay) {
         hourglass: Hourglass(allottedTime)
     };
 }
+Blockgroup.currentId = 0;
+Blockgroup.nextId = () => {
+    Blockgroup.currentId += 1;
+    return Blockgroup.currentId - 1;
+};
 
 /**
  * Creates a Notifications object
@@ -222,7 +228,7 @@ let testBlock = Blockgroup(["reddit.com", "facebook.com"], 1, Notifications([], 
 //console.log("thing ");
 //console.log(thing);
 browser.storage.local.set({blockgroups: {
-    "reddit.com": testBlock
+    [testBlock.id]: testBlock
 }});
 browser.storage.local.get('blockgroups').then(r => {
     console.log(r.blockgroups);
