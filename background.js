@@ -20,7 +20,7 @@ browser.storage.local.get(['blockgroups', 'whitelist']).then(vars => {
 
 // Declare objects
 /**
- * Creates a Blockgroup object
+ * Creates a Blockgroup data structure
  * blacklist is a list of URL strings to be blocked
  * allottedTime is an integer amount of minutes between 0 and 24 * 60
  * notifications is a Notifications object of if and when alerts should happen
@@ -29,36 +29,13 @@ browser.storage.local.get(['blockgroups', 'whitelist']).then(vars => {
  * hourglass is the Hourglass object associated with this Blockgroup
  */
 function Blockgroup(blacklist, allottedTime, notifications, delay) {
-    this.blacklist = blacklist;
-    this.allottedTime = allottedTime;
-    this.notifications = notifications;
-    this.delay = delay;
-    this.hourglass = new Hourglass(allottedTime);
-
-    this.serialize = () => {
-        return {
-            blacklist: this.blacklist,
-            allottedTime: this.allottedTime,
-            notifications: this.notifications.serialize(),
-            delay: this.delay.serialize(),
-            hourglass: this.hourglass.serialize()
-        };
+    return {
+        blacklist: blacklist,
+        allottedTime: allottedTime,
+        notifications: notifications,
+        delay: delay,
+        hourglass: Hourglass(allottedTime)
     };
-}
-
-/**
- * Creates a Blockgroup object from serialized map
- */
-function unserializeBlockgroup(serial) {
-    let unserial = new Blockgroup(serial.blacklist,
-                                  serial.allottedTime,
-                                  new Notifications(serial.notifications),
-                                  new Delay(serial.delay));
-    // Get rid of the new Hourglass
-    clearInterval(unserial.hourglass.hourglass);
-    unserial.hourglass = unserializeHourglass(serial.hourglass);
-
-    return unserial;
 }
 
 /**
@@ -67,14 +44,9 @@ function unserializeBlockgroup(serial) {
  * isActivated is a boolean representing whether notifications are turned on
  */
 function Notifications(notifications, isActivated) {
-    this.notifications = notifications;
-    this.isActivated = isActivated;
-
-    this.serialize = () => {
-        return {
-            notifications: this.notifications,
-            isActivated: this.isActivated
-        };
+    return {
+        notifications: notifications,
+        isActivated: isActivated
     };
 }
 
@@ -84,66 +56,39 @@ function Notifications(notifications, isActivated) {
  * isActivated is a boolean representing whether delay is turned on
  */
 function Delay(delay, isActivated) {
-    this.delay = delay;
-    this.isActivated = isActivated;
-
-    this.serialize = () => {
-        return {
-            delay: delay,
-            isActivated: isActivated
-        };
+    return {
+        delay: delay,
+        isActivated: isActivated
     };
 }
 
 /**
  * Creates Hourglass object
- * hourglass is an id of the interval object associated with this object
  * allottedTime is the starting amount of time for this hourglass
  * timeLeft is the amount of time left until the hourglass expires
  * isActive is a boolean of whether the hourglass is running or not
  */
 function Hourglass(allottedTime) {
-    this.hourglass = null;
-    this.allottedTime = allottedTime;
-    this.timeLeft = allottedTime;
-    this.isActive = false;
-
-    this.start = () => {
-        console.log("Starting hourglass");
-        window.clearInterval(hourglass);
-        hourglass = window.setInterval(() => {
-            this.timeLeft -= 1;
-            tick();
-        }, 1000);
-        this.isActive = true;
-
-        hourglass = this;
-    };
-    this.stop = () => {
-        console.log("Stopping hourglass " + this.hourglass);
-        window.clearInterval(hourglass);
-        this.isActive = false;
-    };
-    this.serialize = () => {
-        return {
-            hourglass: this.hourglass,
-            allottedTime: this.allottedTime,
-            timeLeft: this.timeLeft,
-            isActive: this.isActive
-        };
+    return {
+        allottedTime: allottedTime,
+        timeLeft: allottedTime,
+        isActive: false
     };
 }
+function startHourglass(timer) {
+    console.log("Starting hourglass");
+    window.clearInterval(hourglass);
+    hourglass = window.setInterval(() => {
+        timer.timeLeft -= 1;
+        tick(timer);
+    }, 1000);
 
-/**
- * Creates Hourglass object from serialized map
- */
-function unserializeHourglass(serial) {
-    var unserial = new Hourglass(serial.allottedTime);
-    unserial.hourglass = serial.hourglass;
-    unserial.timeLeft = serial.timeLeft;
-    unserial.isActive = serial.isActive;
-
-    return unserial;
+    timer.isActive = true;
+};
+function stopHourglass(timer) {
+    console.log("Stopping hourglass");
+    window.clearInterval(hourglass);
+    timer.isActive = false;
 }
 
 // Processing functions
@@ -173,8 +118,8 @@ function matchers(urls) {
     return matchers;
 };
 
-function tick() {
-    console.log(hourglass);
+function tick(timer) {
+    console.log(timer);
 }
 
 function blockTab(tab) {
@@ -228,7 +173,7 @@ function gatekeeper(event) {
                     if (blockgroup.delay.isActivated) {
                         if (delayed.includes(active.id)) {
                             setIcon(setIcon.State.blocking);
-                            blockgroup.hourglass.start();
+                            startHourglass(blockgroup.hourglass);
                         } else {
                             setIcon(setIcon.State.delay);
                             delayTab(active);
@@ -236,14 +181,14 @@ function gatekeeper(event) {
                     } else {
                         if (blockgroup.hourglass.timeLeft > 0) {
                             setIcon(setIcon.State.blocking);
-                            blockgroup.hourglass.start();
+                            startHourglass(blockgroup.hourglass);
                         } else blockTab(active);
                     }
                     return;
                 } else {
                     // The current page is innocent of *this* blockgroup
                     setIcon(setIcon.State.neutral);
-                    blockgroup.hourglass.stop();
+                    stopHourglass(blockgroup.hourglass);
                 }
             });
         }
@@ -272,9 +217,8 @@ browser.tabs.onActivated.addListener((event) => {
 
 // Test blockgroups
 //console.log("test");
-let testBlock = new Blockgroup(["reddit.com", "facebook.com"], 1, new Notifications([], false), new Delay(10, false));
+let testBlock = Blockgroup(["reddit.com", "facebook.com"], 1, Notifications([], false), Delay(10, false));
 //console.log(testBlock);
-let thing = testBlock.serialize();
 //console.log("thing ");
 //console.log(thing);
 browser.storage.local.set({blockgroups: [
