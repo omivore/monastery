@@ -55,7 +55,7 @@ function unserializeBlockgroup(serial) {
                                   new Notifications(serial.notifications),
                                   new Delay(serial.delay));
     // Get rid of the new Hourglass
-    clearTimeout(unserial.hourglass.hourglass);
+    clearInterval(unserial.hourglass.hourglass);
     unserial.hourglass = unserializeHourglass(serial.hourglass);
 
     return unserial;
@@ -97,7 +97,7 @@ function Delay(delay, isActivated) {
 
 /**
  * Creates Hourglass object
- * hourglass is an id of the timeout object associated with this object
+ * hourglass is an id of the interval object associated with this object
  * allottedTime is the starting amount of time for this hourglass
  * timeLeft is the amount of time left until the hourglass expires
  * isActive is a boolean of whether the hourglass is running or not
@@ -110,15 +110,18 @@ function Hourglass(allottedTime) {
 
     this.start = () => {
         console.log("Starting hourglass");
-        this.hourglass = window.setTimeout(() => {
+        window.clearInterval(hourglass);
+        hourglass = window.setInterval(() => {
             this.timeLeft -= 1;
             tick();
-        }, this.timeLeft);
+        }, 1000);
         this.isActive = true;
+
+        hourglass = this;
     };
     this.stop = () => {
-        console.log("Stopping hourglass");
-        window.clearTimeout(this.hourglass);
+        console.log("Stopping hourglass " + this.hourglass);
+        window.clearInterval(hourglass);
         this.isActive = false;
     };
     this.serialize = () => {
@@ -171,7 +174,7 @@ function matchers(urls) {
 };
 
 function tick() {
-
+    console.log(hourglass);
 }
 
 function blockTab(tab) {
@@ -277,3 +280,6 @@ let thing = testBlock.serialize();
 browser.storage.local.set({blockgroups: [
     thing
 ]});
+browser.storage.local.get('blockgroups').then(r => {
+    console.log(r.blockgroups);
+});
