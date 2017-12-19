@@ -6,7 +6,7 @@ var delayed = [];
 // Initialize all storage variables if nonexistent
 browser.storage.local.get(['blockgroups', 'whitelist']).then(vars => {
     if (!vars.hasOwnProperty('blockgroups')) {
-        browser.storage.local.set({blockgroups: []});
+        browser.storage.local.set({blockgroups: {}});
         console.log("Initialized empty storage variable blockgroups");
     }
     if (!vars.hasOwnProperty('whitelist')) {
@@ -162,8 +162,8 @@ setIcon.State = {
 // Set up tab watching
 function gatekeeper(event) {
     browser.storage.local.get(['blockgroups', 'whitelist']).then(vars => {
-        for (let serialBlockgroup of vars.blockgroups) {
-            let blockgroup = unserializeBlockgroup(serialBlockgroup);
+        for (let key in vars.blockgroups) {
+            var blockgroup = vars.blockgroups[key];
             console.log(blockgroup);
             matchActive(blockgroup.blacklist, vars.whitelist).then(blacks => {
                 console.log(blacks);
@@ -221,9 +221,9 @@ let testBlock = Blockgroup(["reddit.com", "facebook.com"], 1, Notifications([], 
 //console.log(testBlock);
 //console.log("thing ");
 //console.log(thing);
-browser.storage.local.set({blockgroups: [
-    thing
-]});
+browser.storage.local.set({blockgroups: {
+    "reddit.com": testBlock
+}});
 browser.storage.local.get('blockgroups').then(r => {
     console.log(r.blockgroups);
 });
