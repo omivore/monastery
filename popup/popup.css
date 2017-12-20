@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+body {
+    width: 180px;
+    padding-top: 10px;
+    background-color: white;
+}
+p {
+    margin: 0;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    text-align: right;
+    color: #2D2D2D;
+}
+#timer {
+    margin: 5px 0 3px 0;
+    border: 1px black solid;
+    font-size: 20px;
+    text-align: center;
+}
+#expiry {
+    font-size: 10px;
+}
+#settings {
+    float: right;
+    margin: 20px 0 10px 0;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    cursor: pointer;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    background-color: #7C7C7C;
+    padding: 4px 6px 4px 6px;
+}
+#settings:hover {
+    text-decoration: none;
+    background-color: #496E94;
+}
+#settings:active {
+    text-decoration: none;
+    background-color: #58A;
+}
