@@ -2,16 +2,47 @@ body {
     display: flex;
     align-items: stretch;
 }
+h2 {
+    font-family: "Helvetica Neue";
+    margin-bottom: 7px;
+}
 .slice {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-}
-#global_pane form {
-}
-#global_pane {
-    border: 2px solid red;
-}
-#blockgroup_pane {
+
     border: 2px solid blue;
+}
+.slice > * {
+    padding: 0 5px 0 5px;
+    border: 2px solid green;
+}
+input[type="button"], input[type="submit"] {
+    padding: 3px;
+    border: solid ThreeDShadow;
+    border-width: 0 1px 0 1px;
+    border-radius: 0;
+    color: white;
+    background-color: #7C7C7C;
+}
+input[type="button"]:hover, input[type="submit"]:hover {
+    background-color: #496E94;
+}
+input[type="button"]:active, input[type="submit"]:active {
+    background-color: #58A;
+}
+
+/**********     Blockgroups Styles      **********/
+#blockgroups select {
+    width: 100%;
+    height: 70%;
+    margin: 0;
+}
+#blockgroups div {
+    display: flex;
+    justify-content: space-between;
+}
+#blockgroups input {
+    display: inline;
+    flex: auto;
 }
