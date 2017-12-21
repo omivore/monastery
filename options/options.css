@@ -2,8 +2,8 @@ body {
     display: flex;
     align-items: stretch;
 }
-h2 {
-    font-family: "Helvetica Neue";
+p, h2, span {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin-bottom: 7px;
 }
 .slice {
@@ -31,12 +31,13 @@ input[type="button"]:hover, input[type="submit"]:hover {
 input[type="button"]:active, input[type="submit"]:active {
     background-color: #58A;
 }
+select {
+    width: 100%;
+}
 
 /**********     Blockgroups Styles      **********/
 #blockgroups select {
-    width: 100%;
     height: 70%;
-    margin: 0;
 }
 #blockgroups div {
     display: flex;
@@ -45,4 +46,30 @@ input[type="button"]:active, input[type="submit"]:active {
 #blockgroups input {
     display: inline;
     flex: auto;
+}
+
+/**********     Whitelist Styles        **********/
+#whitelist select {
+    height: 50%;
+}
+#whitelist input[type="button"] {
+    width: 100%;
+}
+#whitelist div {
+    display: flex;
+    margin-top: 15px;
+}
+#whitelist input[type="text"] {
+    display: inline;
+    width: 80%;
+}
+#whitelist input[type="submit"] {
+    display: inline;
+    width: 20%;
+}
+#whitelist .errorField {
+    margin-top: 5px;
+    color: red;
+    font-size: 13px;
+    font-style: italic;
 }
