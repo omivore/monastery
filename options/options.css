@@ -45,26 +45,26 @@ select {
     flex: auto;
 }
 
-/**********     Whitelist Styles        **********/
-#whitelist select {
+/**********     Sitelist Styles        **********/
+.sitelist select {
     height: 50%;
 }
-#whitelist input[type="button"] {
+.sitelist input[type="button"] {
     width: 100%;
 }
-#whitelist div {
+.sitelist div {
     display: flex;
     margin-top: 15px;
 }
-#whitelist input[type="text"] {
+.sitelist input[type="text"] {
     display: inline;
     width: 80%;
 }
-#whitelist input[type="submit"] {
+.sitelist input[type="submit"] {
     display: inline;
     width: 20%;
 }
-#whitelist .errorField {
+.sitelist .errorField {
     margin-top: 5px;
     color: red;
     font-size: 13px;
