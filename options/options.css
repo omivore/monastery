@@ -1,0 +1,17 @@
+body {
+    display: flex;
+    align-items: stretch;
+}
+.slice {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+#global_pane form {
+}
+#global_pane {
+    border: 2px solid red;
+}
+#blockgroup_pane {
+    border: 2px solid blue;
+}
