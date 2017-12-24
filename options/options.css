@@ -1,10 +1,11 @@
 body {
+    height: 400px;
     display: flex;
     align-items: stretch;
 }
 p, h2, span {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin-bottom: 7px;
+    margin: 0 auto 7px auto;
 }
 .slice {
     display: flex;
@@ -13,6 +14,8 @@ p, h2, span {
 }
 .slice > * {
     padding: 0 5px 0 5px;
+    flex: 1;
+    min-width: 0;
 }
 input[type="button"], input[type="submit"] {
     padding: 3px;
@@ -30,12 +33,10 @@ input[type="button"]:active, input[type="submit"]:active {
 }
 select {
     width: 100%;
+    height: 50%;
 }
 
 /**********     Blockgroups Styles      **********/
-#blockgroups select {
-    height: 70%;
-}
 #blockgroups div {
     display: flex;
     justify-content: space-between;
@@ -74,4 +75,13 @@ select {
 /**********     Naming Options      **********/
 #bg_name {
     width: 95%;
+}
+
+/**********     Blocking Options    **********/
+#blockgroup_time input, #blockgroup_time p {
+    display: inline;
+}
+
+#blockgroup_time input {
+    width: 70px;
 }
