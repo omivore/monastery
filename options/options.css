@@ -3,7 +3,7 @@ body {
     display: flex;
     align-items: stretch;
 }
-p, h2, span {
+p, h3, span {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: 0 auto 7px auto;
 }
