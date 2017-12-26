@@ -107,15 +107,15 @@ select {
     height: 25px;
 }
 
-#delays #delay_switch {
+.switch {
     display: flex;
 }
 
-#delays #delay_switch input {
+.switch input {
     flex: 0;
 }
 
-#delays #delay_switch p {
+.switch p {
     width: 75%;
     margin-left: 10px;
 }
