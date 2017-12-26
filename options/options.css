@@ -84,7 +84,7 @@ select {
 }
 
 /**********     Naming Options      **********/
-#bg_name {
+#blockgroup_name input {
     width: 95%;
 }
 
@@ -130,14 +130,14 @@ select {
     margin-left: 10px;
 }
 
-#delays > p {
+#blockgroup_delays > p {
     margin: 10px 0 10px 0;
 }
 
-#delays #delay_length input {
+#blockgroup_delays div:last-child input {
     width: 40px;
 }
-#delays #delay_length p {
+#blockgroup_delays div:last-child p {
     display: inline;
 }
 

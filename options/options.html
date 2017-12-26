@@ -5,10 +5,10 @@
         <link href="options.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-        <section id="global_pane" class="slice">
+        <section class="slice">
             <div id="blockgroups">
                 <h3>Blockgroups</h3>
-                    <select multiple></select>
+                <select multiple></select>
                 <div>
                     <input type="button" value="+">
                     <input type="button" value="-">
@@ -28,13 +28,13 @@
 
         <div id="divider" class="slice"></div>
 
-        <div id="blockgroup_info" class="slice">
-            <div>
+        <div class="slice">
+            <div id="blockgroup_name">
                 <h3>Name</h3>
-                <input id="bg_name" type="text">
+                <input type="text">
             </div>
 
-            <form id="blacklist" class="sitelist">
+            <form id="blockgroup_blacklist" class="sitelist">
                 <h3>Blacklist</h3>
                 <select multiple></select>
                 <input type="button" value="Remove">
@@ -60,16 +60,14 @@
                 </div>
             </div>
 
-            <div id="delays">
+            <div id="blockgroup_delays">
                 <h3>Delays</h3>
                 <div class="switch">
                     <input type="checkbox">
-                    <p>
-                        Delay access to blocked pages
-                    </p>
+                    <p>Delay access to blocked pages</p>
                 </div>
                 <p>Delay for:</p>
-                <div id="delay_length">
+                <div>
                     <input type="number" min=".5" step=".5">
                     <p>minutes</p>
                 </div>
@@ -81,9 +79,7 @@
                 <h3>Notifications</h3>
                 <div class="switch">
                     <input type="checkbox">
-                    <p>
-                        Notify how much time is left
-                    </p>
+                    <p>Notify how much time is left</p>
                 </div>
                 <p>Notify at:</p>
                 <input type="button" value="Add">
