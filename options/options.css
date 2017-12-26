@@ -47,6 +47,16 @@ select {
     flex: auto;
 }
 
+#divider {
+    background: linear-gradient(
+                rgba(0, 0, 0, 0),
+                #496E94, #496E94, #496E94,
+                rgba(0, 0, 0, 0)
+    );
+    flex: 0 0 2px;
+    margin: 0 10px 0 10px;
+}
+
 /**********     Sitelist Styles        **********/
 .sitelist select {
     height: 50%;
