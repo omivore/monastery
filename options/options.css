@@ -79,7 +79,7 @@ select {
 }
 
 /**********     Blocking Options    **********/
-#blockgroup_time input, #blockgroup_time div div p {
+#blockgroup_time input, #blockgroup_time div p {
     display: inline;
 }
 
@@ -88,11 +88,11 @@ select {
     margin-right: 5px;
 }
 
-#blockgroup_time div div {
+#blockgroup_time div {
     display: inline-block;
 }
 
-#blockgroup_time div div:first-of-type {
+#blockgroup_time div:first-of-type {
     margin: 0 10px 10px 0;
 }
 
