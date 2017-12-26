@@ -9,6 +9,7 @@ p, h3, span {
 }
 .slice {
     display: flex;
+    flex: 1 1;
     flex-direction: column;
     justify-content: space-evenly;
 }
@@ -93,4 +94,37 @@ select {
 
 #blockgroup_time div div:first-of-type {
     margin: 0 10px 10px 0;
+}
+
+/**********     Delay Options       **********/
+#delays input[type="button"] {
+    width: 105px;
+    margin-top: 20px;
+}
+
+#delays input[type="number"] {
+    width: 60px;
+    height: 25px;
+}
+
+#delays #delay_switch {
+    display: flex;
+}
+
+#delays #delay_switch input {
+    flex: 0;
+}
+
+#delays #delay_switch p {
+    width: 75%;
+    margin-left: 10px;
+}
+
+#delays > p {
+    margin: 20px 0 10px 0;
+}
+
+#delays #delay_length input {
+    width: 40px;
+    margin-right: 10px;
 }
