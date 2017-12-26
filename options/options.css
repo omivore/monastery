@@ -121,10 +121,17 @@ select {
 }
 
 #delays > p {
-    margin: 20px 0 10px 0;
+    margin: 10px 0 10px 0;
 }
 
 #delays #delay_length input {
     width: 40px;
-    margin-right: 10px;
+}
+#delays #delay_length p {
+    display: inline;
+}
+
+/********** Notification Settings   **********/
+#blockgroup_notifications > p {
+    margin-top: 10px 0 10px 0;
 }
