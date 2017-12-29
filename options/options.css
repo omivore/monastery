@@ -3,7 +3,7 @@ body {
     display: flex;
     align-items: stretch;
 }
-p, h3, span {
+p, h3, h4, span {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: 0 auto 7px auto;
 }
@@ -43,8 +43,41 @@ select {
     justify-content: space-between;
 }
 #blockgroups input {
-    display: inline;
-    flex: auto;
+    width: 100%;
+}
+.entry {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    width: 100%;
+    padding: 10px 10px 0 10px;
+    margin-bottom: 5px;
+    border: 1px solid #7C7C7C;
+    background-color: white;
+    cursor: default;
+}
+.entry h4 {
+    margin: 0;
+    vertical-align: middle;
+}
+.close_button {
+    width: 10px;
+    height: 10px;
+    margin: 0;
+    padding: 5px;
+    text-align: center;
+    line-height: 10px;
+    border-radius: 100%;
+    -moz-user-select: none;
+    font-family: sans-serif;
+    color: white;
+    background-color: #777;
+}
+.close_button:hover {
+    background-color: #944949;
+}
+.close_button:active {
+    background-color: #E06F6F;
 }
 
 #divider {
@@ -144,4 +177,20 @@ select {
 /********** Notification Settings   **********/
 #blockgroup_notifications > p {
     margin-top: 10px 0 10px 0;
+}
+#blockgroup_notifications input[type="button"] {
+    width: 100%;
+}
+#blockgroup_notifications .entry {
+    width: 40%;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0;
+    padding: 0 0 10px 0;
+}
+#blockgroup_notifications .entry input {
+    width: 30px;
+}
+#blockgroup_notifications .entry span {
+    margin-top: 5px;
+    margin-left: 15px;
 }
