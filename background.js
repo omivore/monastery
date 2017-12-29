@@ -6,7 +6,8 @@ var delayed = [];
 // Initialize all storage variables if nonexistent
 browser.storage.local.get(['blockgroups', 'whitelist']).then(vars => {
     if (!vars.hasOwnProperty('blockgroups')) {
-        browser.storage.local.set({blockgroups: {}});
+        var temp = Blockgroup([], 60, [], false, 30, false);
+        browser.storage.local.set({blockgroups: {[temp.id]: temp}});
         console.log("Initialized empty storage variable blockgroups");
     }
     if (!vars.hasOwnProperty('whitelist')) {
@@ -35,8 +36,10 @@ browser.storage.local.get(['blockgroups', 'whitelist']).then(vars => {
 function Blockgroup(blacklist, allottedTime,
                     notifications, isNotificationsActive,
                     delay, isDelayActive) {
+    let newId = Blockgroup.nextId();
     return {
-        id: Blockgroup.nextId(),
+        id: newId,
+        name: "Blockgroup " + newId,
         blacklist: blacklist,
         allottedTime: allottedTime,
         notifications: {
@@ -213,10 +216,11 @@ browser.tabs.onActivated.addListener((event) => {
 
 // Test blockgroups
 //console.log("test");
-let testBlock = Blockgroup(["reddit.com", "facebook.com"], 12, [], false, 10, false);
+let testBlock = Blockgroup(["reddit.com", "facebook.com"], 12, [5, 10], true, 10, true);
 //console.log(testBlock);
 //console.log("thing ");
 //console.log(thing);
+testBlock.name = "Testme";
 browser.storage.local.set({blockgroups: {
     [testBlock.id]: testBlock
 }});
@@ -229,4 +233,15 @@ setTimeout(() => {
     browser.storage.local.set({blockgroups: {
         [testBlock.id]: testBlock
     }});
+}, 5000);
+
+// Test whitelists
+browser.storage.local.set({
+    whitelist: ['facebook.com/messages']
+});
+
+setTimeout(() => {
+    browser.storage.local.get('whitelist').then(r => {
+        console.log(r.whitelist);
+    });
 }, 5000);
