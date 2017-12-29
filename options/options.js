@@ -123,6 +123,7 @@ function newBlockgroupEntry(blockgroup) {
     title.appendChild(document.createTextNode(blockgroup.name));
     var closeBtn = document.createElement('span');
     closeBtn.classList.add('close_button');
+    closeBtn.classList.add('red');
     closeBtn.appendChild(document.createTextNode('×'));
 
     entry.appendChild(title);
@@ -139,6 +140,7 @@ function newNotificationEntry(blockgroup, noteTime) {
     setting.value = noteTime;
     var closeBtn = document.createElement('span');
     closeBtn.classList.add('close_button');
+    closeBtn.classList.add('red');
     closeBtn.appendChild(document.createTextNode('×'));
 
     entry.appendChild(setting);

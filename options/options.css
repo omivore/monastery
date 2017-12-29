@@ -73,11 +73,11 @@ select {
     color: white;
     background-color: #777;
 }
-.close_button:hover {
-    background-color: #944949;
+.red:hover {
+    background-color: #944949 !important;
 }
-.close_button:active {
-    background-color: #E06F6F;
+.red:active {
+    background-color: #E06F6F !important;
 }
 
 #divider {
