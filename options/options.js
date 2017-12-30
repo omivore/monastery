@@ -21,15 +21,12 @@ function updateBlockgroups() {
         while (bg.hasChildNodes()) bg.removeChild(bg.lastChild);
 
         // Repopulate
-        var selected = false;
         for (let key in vars.blockgroups) {
             bg.appendChild(newBlockgroupEntry(vars.blockgroups[key]));
-
-            if (!selected) {
-                bg.firstChild.classList.add('selected');
-                selected = true;
-            }
         }
+
+        // Select the first one
+        selectGroup(null);
     });
 }
 
@@ -155,11 +152,33 @@ function newNotificationEntry(blockgroup, noteTime) {
     return entry;
 }
 
+// Selects the blockgroup in the blockgroup select. If null, selects first group.
 function selectGroup(blockgroup) {
-    currentBlockgroup = blockgroup;
-    document.querySelector('.selected').classList.remove('selected');
-    document.querySelector(`#blockgroup_select div[data-id="${blockgroup.id}"]`)
-        .classList.add('selected');
+    if (blockgroup == null) {
+        // De-select last group
+        let last = document.querySelector('.selected');
+        if (last != null) last.classList.remove('selected');
+
+        // If null, then just select first
+        bg.firstChild.classList.add('selected');
+
+        // Assign currentBlockgroup
+        browser.storage.local.get('blockgroups').then(vars => {
+            currentBlockgroup = vars.blockgroups[bg.firstChild.id];
+        });
+    } else {
+        // Assign currentBlockgroup
+        currentBlockgroup = blockgroup;
+
+        // Select current group
+        let next = document.querySelector(`#blockgroup_select div[data-id="${blockgroup.id}"]`);
+        if (next != null) next.classList.add('selected');
+        else console.error(`Blockgroup with id '${blockgroup.id}' could not be found`);
+
+        // De-select last group
+        let last = document.querySelector('.selected');
+        if (last != null) last.classList.remove('selected');
+    }
 }
 
 /**********     Server side communications      **********/
