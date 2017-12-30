@@ -130,16 +130,13 @@ select {
 #blockgroup_time input, #blockgroup_time div p {
     display: inline;
 }
-
 #blockgroup_time input {
     width: 30px;
     margin-right: 5px;
 }
-
 #blockgroup_time div {
     display: inline-block;
 }
-
 #blockgroup_time div:first-of-type {
     margin: 0 10px 10px 0;
 }
@@ -149,7 +146,6 @@ select {
     width: 105px;
     margin-top: 20px;
 }
-
 #delays input[type="number"] {
     width: 60px;
     height: 25px;
@@ -158,11 +154,9 @@ select {
 .switch {
     display: flex;
 }
-
 .switch input {
     flex: 0;
 }
-
 .switch p {
     width: 75%;
     margin-left: 10px;
@@ -171,10 +165,10 @@ select {
 #blockgroup_delays > p {
     margin: 10px 0 10px 0;
 }
-
 #blockgroup_delays div:last-child input {
     width: 40px;
 }
+
 #blockgroup_delays div:last-child p {
     display: inline;
 }

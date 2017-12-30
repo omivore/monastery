@@ -155,6 +155,13 @@ function newNotificationEntry(blockgroup, noteTime) {
     return entry;
 }
 
+function selectGroup(blockgroup) {
+    currentBlockgroup = blockgroup;
+    document.querySelector('.selected').classList.remove('selected');
+    document.querySelector(`#blockgroup_select div[data-id="${blockgroup.id}"]`)
+        .classList.add('selected');
+}
+
 // Initialize page
 updateWhitelist();
 updateBlockgroups().then(updateBlockgroup);
