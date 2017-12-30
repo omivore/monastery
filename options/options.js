@@ -127,6 +127,19 @@ function newBlockgroupEntry(blockgroup) {
     var closeBtn = document.createElement('span');
     closeBtn.classList.add('close_button');
     closeBtn.classList.add('red');
+    closeBtn.addEventListener('click', e => {
+        // Remove this blockgroup
+        browser.storage.local.get('blockgroups')
+            .then(vars => {
+                delete vars.blockgroups[blockgroup.id];
+                browser.storage.local.set({
+                    blockgroups: vars.blockgroups
+                });
+            })
+            .then(updateBlockgroups)
+            .then(() => selectGroup(null))
+            .then(updateBlockgroup);
+    });
     closeBtn.appendChild(document.createTextNode('×'));
 
     entry.appendChild(title);
@@ -198,7 +211,6 @@ port.onMessage.addListener((msg) => {
 /**********     Button control functions        **********/
 document.querySelector('#blockgroups input')
     .addEventListener('click', (e) => {
-    browser.storage.local.get('blockgroups').then((result) => console.log(result));
     // Create a new blockgroup
     newBlockgroup();
     // Update and select is done by background.js
