@@ -21,8 +21,14 @@ function updateBlockgroups() {
         while (bg.hasChildNodes()) bg.removeChild(bg.lastChild);
 
         // Repopulate
+        var selected = false;
         for (let key in vars.blockgroups) {
             bg.appendChild(newBlockgroupEntry(vars.blockgroups[key]));
+
+            if (!selected) {
+                bg.firstChild.classList.add('selected');
+                selected = true;
+            }
         }
     });
 }

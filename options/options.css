@@ -79,6 +79,11 @@ select {
 .red:active {
     background-color: #E06F6F !important;
 }
+.selected {
+    border-color: #58A;
+    border-width: 3px;
+    color: #486E94;
+}
 
 #divider {
     background: linear-gradient(
