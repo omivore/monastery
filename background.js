@@ -113,7 +113,7 @@ function tick(blockgroup) {
 }
 
 function updateBlockgroup(blockgroup) {
-    browser.storage.local.get('blockgroups').then(result => {
+    return browser.storage.local.get('blockgroups').then(result => {
         result.blockgroups[blockgroup.id] = blockgroup;
         browser.storage.local.set({
             blockgroups: result.blockgroups
@@ -157,6 +157,21 @@ setIcon.State = {
     delay: "delay",
     neutral: "neutral",
 };
+
+// Content script communications
+var optionsPort;
+browser.runtime.onConnect.addListener((port) => {
+    optionsPort = port;
+    optionsPort.onMessage.addListener((msg) => {
+        // Create the desired new Blockgroup
+        var newGroup = Blockgroup([], 30, [], true, 30, false);
+        // Add to storage
+        updateBlockgroup(newGroup).then(() => {
+            // Select the new Blockgroup
+            optionsPort.postMessage({select: newGroup});
+        });
+    });
+});
 
 // Set up tab watching
 function gatekeeper(event) {

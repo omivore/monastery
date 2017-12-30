@@ -60,7 +60,7 @@ function updateBlockgroup() {
             return currentBlockgroup;
         });
     } else {
-        hasCurrent = new Promise((pass, fail) => currentBlockgroup);
+        hasCurrent = Promise.resolve(currentBlockgroup);
     }
 
     hasCurrent.then(() => {
@@ -161,6 +161,29 @@ function selectGroup(blockgroup) {
     document.querySelector(`#blockgroup_select div[data-id="${blockgroup.id}"]`)
         .classList.add('selected');
 }
+
+/**********     Server side communications      **********/
+var port = browser.runtime.connect({name: "options-port"});
+function newBlockgroup() {
+    port.postMessage({
+        type: 'options',
+    });
+}
+port.onMessage.addListener((msg) => {
+    updateBlockgroups().then(() => {
+        selectGroup(msg.select);
+        updateBlockgroup();
+    });
+});
+
+/**********     Button control functions        **********/
+document.querySelector('#blockgroups input')
+    .addEventListener('click', (e) => {
+    browser.storage.local.get('blockgroups').then((result) => console.log(result));
+    // Create a new blockgroup
+    newBlockgroup();
+    // Update and select is done by background.js
+});
 
 // Initialize page
 updateWhitelist();
