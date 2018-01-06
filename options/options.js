@@ -26,7 +26,7 @@ function updateBlockgroups() {
         }
 
         // Select the first one
-        selectGroup(null);
+        selectGroup();
     });
 }
 
@@ -131,14 +131,14 @@ function newBlockgroupEntry(blockgroup) {
         // Remove this blockgroup
         browser.storage.local.get('blockgroups')
             .then(vars => {
+                console.log("Removing");
                 delete vars.blockgroups[blockgroup.id];
                 browser.storage.local.set({
                     blockgroups: vars.blockgroups
-                });
+                })
+                .then(updateBlockgroups)
+                .then(selectGroup);
             })
-            .then(updateBlockgroups)
-            .then(() => selectGroup(null))
-            .then(updateBlockgroup);
     });
     closeBtn.appendChild(document.createTextNode('×'));
 
@@ -165,33 +165,32 @@ function newNotificationEntry(blockgroup, noteTime) {
     return entry;
 }
 
-// Selects the blockgroup in the blockgroup select. If null, selects first group.
+// Selects the blockgroup in the blockgroup select. Defaults to first group
 function selectGroup(blockgroup) {
-    if (blockgroup == null) {
-        // De-select last group
-        let last = document.querySelector('.selected');
-        if (last != null) last.classList.remove('selected');
-
-        // If null, then just select first
-        bg.firstChild.classList.add('selected');
-
-        // Assign currentBlockgroup
-        browser.storage.local.get('blockgroups').then(vars => {
-            currentBlockgroup = vars.blockgroups[bg.firstChild.id];
-        });
-    } else {
-        // Assign currentBlockgroup
-        currentBlockgroup = blockgroup;
-
-        // Select current group
-        let next = document.querySelector(`#blockgroup_select div[data-id="${blockgroup.id}"]`);
-        if (next != null) next.classList.add('selected');
-        else console.error(`Blockgroup with id '${blockgroup.id}' could not be found`);
-
-        // De-select last group
-        let last = document.querySelector('.selected');
-        if (last != null) last.classList.remove('selected');
+    // Empty call means selectGroup default
+    if (typeof blockgroup == "undefined") {
+        console.log("Selecting default blockgroup");
+        browser.storage.local.get('blockgroups')
+            .then(vars => vars.blockgroups[bg.firstChild.dataset.id])
+            .then(target => selectGroup(target));
+        return;
     }
+
+    // Standard call to selectGroup
+    console.log(`Selecting blockgroup id ${blockgroup.id} "${blockgroup.name}"`);
+
+    // De-select last group, if there was a last group
+    let last = document.querySelector('.selected');
+    if (last != null) last.classList.remove('selected');
+
+    // Select current group
+    let next = document.querySelector(`#blockgroup_select div[data-id="${blockgroup.id}"]`);
+    if (next != null) next.classList.add('selected');
+    else console.error(`Blockgroup with id '${blockgroup.id}' could not be found`);
+
+    // Assign currentBlockgroup
+    currentBlockgroup = blockgroup;
+console.log(currentBlockgroup);
 
     // Update the views
     refreshOptions();
@@ -205,10 +204,7 @@ function newBlockgroup() {
     });
 }
 port.onMessage.addListener((msg) => {
-    updateBlockgroups().then(() => {
-        selectGroup(msg.select);
-        updateBlockgroup();
-    });
+    updateBlockgroups().then(() => selectGroup(msg.select));
 });
 
 /**********     Button control functions        **********/
