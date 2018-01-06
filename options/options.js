@@ -119,6 +119,11 @@ function newBlockgroupEntry(blockgroup) {
     var entry = document.createElement('div');
     entry.classList.add('entry');
     entry.setAttribute('data-id', blockgroup.id);
+    entry.addEventListener('click', e => {
+        // Make this one the selected group
+        browser.storage.local.get('blockgroups')
+            .then(vars => selectGroup(vars.blockgroups[blockgroup.id]));
+    });
     var title = document.createElement('h4');
     title.appendChild(document.createTextNode(blockgroup.name));
     var closeBtn = document.createElement('span');
