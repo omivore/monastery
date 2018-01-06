@@ -24,9 +24,6 @@ function updateBlockgroups() {
         for (let key in vars.blockgroups) {
             bg.appendChild(newBlockgroupEntry(vars.blockgroups[key]));
         }
-
-        // Select the first one
-        selectGroup();
     });
 }
 
@@ -170,10 +167,9 @@ function selectGroup(blockgroup) {
     // Empty call means selectGroup default
     if (typeof blockgroup == "undefined") {
         console.log("Selecting default blockgroup");
-        browser.storage.local.get('blockgroups')
+        return browser.storage.local.get('blockgroups')
             .then(vars => vars.blockgroups[bg.firstChild.dataset.id])
             .then(target => selectGroup(target));
-        return;
     }
 
     // Standard call to selectGroup
@@ -193,7 +189,7 @@ function selectGroup(blockgroup) {
 console.log(currentBlockgroup);
 
     // Update the views
-    refreshOptions();
+    return refreshOptions();
 }
 
 /**********     Server side communications      **********/
@@ -217,4 +213,4 @@ document.querySelector('#blockgroups input')
 
 // Initialize page
 updateWhitelist();
-updateBlockgroups().then(refreshOptions);
+updateBlockgroups().then(selectGroup);
