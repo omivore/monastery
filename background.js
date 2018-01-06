@@ -113,6 +113,7 @@ function tick(blockgroup) {
 }
 
 function options_addBlockgroup(blockgroup) {
+    console.log("Background adding new blockgroup");
     return browser.storage.local.get('blockgroups').then(result => {
         result.blockgroups[blockgroup.id] = blockgroup;
         browser.storage.local.set({

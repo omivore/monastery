@@ -195,9 +195,11 @@ console.log(currentBlockgroup);
 /**********     Server side communications      **********/
 var port = browser.runtime.connect({name: "options-port"});
 function newBlockgroup() {
+    console.log("Options adding new blockgroup");
     port.postMessage({
         type: 'options',
     });
+    // Update and select is done by background.js
 }
 port.onMessage.addListener((msg) => {
     updateBlockgroups().then(() => selectGroup(msg.select));
@@ -205,11 +207,7 @@ port.onMessage.addListener((msg) => {
 
 /**********     Button control functions        **********/
 document.querySelector('#blockgroups input')
-    .addEventListener('click', (e) => {
-    // Create a new blockgroup
-    newBlockgroup();
-    // Update and select is done by background.js
-});
+    .addEventListener('click', newBlockgroup);
 
 // Initialize page
 updateWhitelist();
