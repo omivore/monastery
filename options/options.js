@@ -47,7 +47,7 @@ function updateWhitelist() {
     });
 }
 
-function updateBlockgroup() {
+function refreshOptions() {
     var hasCurrent;
     // If there's no 'currently selected', pick the first one
     // Assumes there is always at least one blockgroup
@@ -192,6 +192,9 @@ function selectGroup(blockgroup) {
         let last = document.querySelector('.selected');
         if (last != null) last.classList.remove('selected');
     }
+
+    // Update the views
+    refreshOptions();
 }
 
 /**********     Server side communications      **********/
@@ -218,4 +221,4 @@ document.querySelector('#blockgroups input')
 
 // Initialize page
 updateWhitelist();
-updateBlockgroups().then(updateBlockgroup);
+updateBlockgroups().then(refreshOptions);
