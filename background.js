@@ -112,8 +112,8 @@ function tick(blockgroup) {
     updateBlockgroup(blockgroup);
 }
 
-function options_addBlockgroup(blockgroup) {
-    console.log("Background adding new blockgroup");
+function updateBlockgroup(blockgroup) {
+    console.log("Updating blockgroup \"" + blockgroup.name + "\"");
     return browser.storage.local.get('blockgroups').then(result => {
         result.blockgroups[blockgroup.id] = blockgroup;
         browser.storage.local.set({
@@ -166,7 +166,8 @@ browser.runtime.onConnect.addListener((port) => {
     optionsPort.onMessage.addListener(() => {
         // Add the blockgroup then tell options to update
         let newGroup = Blockgroup([], 30, [], true, 30, false);
-        options_addBlockgroup(newGroup)
+        console.log("Background adding new blockgroup");
+        updateBlockgroup(newGroup)
             .then(() => optionsPort.postMessage({select: newGroup}));
     });
 });
