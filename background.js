@@ -52,7 +52,7 @@ function Blockgroup(blacklist, allottedTime,
         },
         hourglass: {
             allottedTime: allottedTime,
-            timeLeft: allottedTime,
+            timeLeft: allottedTime * 60,
             isActive: false
         }
     };
@@ -230,7 +230,7 @@ browser.tabs.onActivated.addListener((event) => {
 
 // Test blockgroups
 //console.log("test");
-let testBlock = Blockgroup(["reddit.com", "facebook.com"], 12, [5, 10], true, 10, true);
+let testBlock = Blockgroup(["reddit.com", "facebook.com"], 1, [5, 10], true, 10, true);
 //console.log(testBlock);
 //console.log("thing ");
 //console.log(thing);
