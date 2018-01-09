@@ -183,7 +183,7 @@ function gatekeeper(event) {
                 if (blacks.length > 0) {
                     // The current page tresspasses this blockgroup
                     let active = blacks[0];
-                    if (blockgroup.delay.isActivated) {
+                    if (blockgroup.delay.isDelayActive) {
                         if (delayed.includes(active.id)) {
                             setIcon(setIcon.State.blocking);
                             startHourglass(blockgroup);
