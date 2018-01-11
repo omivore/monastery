@@ -1,5 +1,4 @@
 body {
-    height: 400px;
     display: flex;
     align-items: stretch;
 }
@@ -47,6 +46,12 @@ select {
 }
 #blockgroup_select {
     flex-direction: column;
+}
+section.slice {
+    align-self: flex-start;
+}
+section.slice #whitelist {
+    margin-top: 60px;
 }
 .entry {
     display: flex;
