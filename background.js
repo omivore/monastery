@@ -19,51 +19,6 @@ browser.storage.local.get(['blockgroups', 'whitelist']).then(vars => {
     }
 });
 
-// Declare objects
-/**
- * Creates a Blockgroup data structure
- * id is a unique identifier to make the storage blockgroups mutable
- * blacklist is a list of URL strings to be blocked
- * allottedTime is an integer amount of minutes between 0 and 24 * 60
- * notifications.notifications is a list of if and when alerts should happen
- * notifications.isNotificationsActive is whether notifications are on
- * delay.delay is an integer amount of seconds to delay blocked pages
- * delay.isDelayActive is whether delay is being used
- * hourglass.allottedTime is the minutes allowed per day
- * hourglass.timeLeft is the minutes left to use in the current day
- * hourglass.isActive is whether this hourglass is currently running
- */
-function Blockgroup(blacklist, allottedTime,
-                    notifications, isNotificationsActive,
-                    delay, isDelayActive) {
-    let newId = Blockgroup.nextId();
-    return {
-        id: newId,
-        name: "Blockgroup " + newId,
-        blacklist: blacklist,
-        allottedTime: allottedTime,
-        notifications: {
-            notifications,
-            isNotificationsActive
-        },
-        delay: {
-            delay,
-            isDelayActive
-        },
-        hourglass: {
-            allottedTime: allottedTime,
-            timeLeft: allottedTime * 60,
-            isActive: false
-        }
-    };
-}
-// Give each new blockgroup an incrementing id; never use the same one
-Blockgroup.currentId = 0;
-Blockgroup.nextId = () => {
-    Blockgroup.currentId += 1;
-    return Blockgroup.currentId - 1;
-};
-
 function startHourglass(blockgroup) {
     console.log("Starting hourglass for blockgroup " + blockgroup.id);
     window.clearInterval(hourglass);
@@ -112,16 +67,6 @@ function tick(blockgroup) {
     updateBlockgroup(blockgroup);
 }
 
-function updateBlockgroup(blockgroup) {
-    console.log("Updating blockgroup \"" + blockgroup.name + "\"");
-    return browser.storage.local.get('blockgroups').then(result => {
-        result.blockgroups[blockgroup.id] = blockgroup;
-        browser.storage.local.set({
-            blockgroups: result.blockgroups
-        });
-    });
-}
-
 function blockTab(tab) {
     browser.tabs.update(
         tab.id,
@@ -159,18 +104,6 @@ setIcon.State = {
     neutral: "neutral",
 };
 
-// Content script communications
-var optionsPort;
-browser.runtime.onConnect.addListener((port) => {
-    optionsPort = port;
-    optionsPort.onMessage.addListener(() => {
-        // Add the blockgroup then tell options to update
-        let newGroup = Blockgroup([], 30, [], true, 30, false);
-        console.log("Background adding new blockgroup");
-        updateBlockgroup(newGroup)
-            .then(() => optionsPort.postMessage({select: newGroup}));
-    });
-});
 
 // Set up tab watching
 function gatekeeper(event) {

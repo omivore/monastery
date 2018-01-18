@@ -197,22 +197,16 @@ console.log(currentBlockgroup);
     return refreshOptions();
 }
 
-/**********     Server side communications      **********/
-var port = browser.runtime.connect({name: "options-port"});
-function newBlockgroup() {
-    console.log("Options adding new blockgroup");
-    port.postMessage({
-        type: 'options',
-    });
-    // Update and select is done by background.js
-}
-port.onMessage.addListener((msg) => {
-    updateBlockgroups().then(() => selectGroup(msg.select));
-});
-
 /**********     Button control functions        **********/
-document.querySelector('#blockgroups input')
-    .addEventListener('click', newBlockgroup);
+document.querySelector('#blockgroups input').addEventListener('click', () => {
+    console.log("Adding new blockgroup");
+
+    // Add the blockgroup then tell options to update
+    let newGroup = Blockgroup([], 30, [], true, 30, false);
+    updateBlockgroup(newGroup)
+        .then(updateBlockgroups)
+        .then(() => selectGroup(newGroup));
+});
 
 // Initialize page
 updateWhitelist();

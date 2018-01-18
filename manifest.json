@@ -18,7 +18,7 @@
 
     "permissions": ["<all_urls>", "tabs", "notifications", "storage"],
     "background": {
-        "scripts": ["background.js"]
+        "scripts": ["blockgroup.js", "background.js"]
     },
     "browser_action": {
         "default_icon": "icons/monastery.svg",
