@@ -207,6 +207,12 @@ document.querySelector('#blockgroups input').addEventListener('click', () => {
         .then(updateBlockgroups)
         .then(() => selectGroup(newGroup));
 });
+name.addEventListener('input', () => {
+    currentBlockgroup.name = name.value;
+    updateBlockgroup(currentBlockgroup)
+        .then(updateBlockgroups)
+        .then(() => selectGroup(currentBlockgroup));
+});
 
 // Initialize page
 updateWhitelist();
