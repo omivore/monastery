@@ -198,6 +198,7 @@ console.log(currentBlockgroup);
 }
 
 /**********     Button control functions        **********/
+// Blockgroups
 document.querySelector('#blockgroups input').addEventListener('click', () => {
     console.log("Adding new blockgroup");
 
@@ -207,6 +208,47 @@ document.querySelector('#blockgroups input').addEventListener('click', () => {
         .then(updateBlockgroups)
         .then(() => selectGroup(newGroup));
 });
+// Whitelist
+//      Update the whitelist
+function updateList(modify) {
+    return browser.storage.local.get('whitelist').then(result => {
+        var newWhitelist = (typeof result.whitelist === 'undefined') ? [] : result.whitelist;
+        modify(newWhitelist);
+        browser.storage.local.set({whitelist: newWhitelist})
+            .then(updateWhitelist);
+        console.log(`Storing new whitelist [${newWhitelist}]`);
+    });
+}
+//      Adding a site
+document.querySelector('#whitelist')
+    .addEventListener('submit', event => {
+    event.preventDefault();
+
+    let input = document.querySelector('#whitelist input[type=text]');
+    updateList((list) => {
+        list.push(input.value);
+        input.value = '';
+        return list;
+    });
+});
+//      Removing a site
+document.querySelector('#whitelist input[type=button]')
+    .addEventListener('click', event => {
+    var indicesToRemove = [];
+    for (let i = 0, option; i < whitelist.length; i++) {
+        option = whitelist.options[i];
+        if (option.selected) indicesToRemove.push(i);
+    }
+    updateList((list) => {
+        for (let i = 0; i < indicesToRemove.length; i++) {
+            // Subtract the number of already
+            // removed elements due to shortened array.
+            list.splice(indicesToRemove[i] - i, 1);
+        }
+        return list;
+    });
+});
+// Name
 name.addEventListener('input', () => {
     currentBlockgroup.name = name.value;
     updateBlockgroup(currentBlockgroup)
