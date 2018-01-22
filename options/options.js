@@ -219,6 +219,13 @@ function updateList(modify) {
         console.log(`Storing new whitelist [${newWhitelist}]`);
     });
 }
+//      Ensure website entry is appropriate
+function validateEntry(current, entry) {
+    if (entry == '') return 'No site provided.';
+    else if (current.indexOf(entry) != -1) {
+        return 'Site is already on the list.';
+    } else return '';
+}
 //      Adding a site
 document.querySelector('#whitelist')
     .addEventListener('submit', event => {
@@ -226,8 +233,22 @@ document.querySelector('#whitelist')
 
     let input = document.querySelector('#whitelist input[type=text]');
     updateList((list) => {
-        list.push(input.value);
-        input.value = '';
+        let validation = validateEntry(list, input.value);
+        console.log(validation == '');
+        if (validation != '') {
+            let errorField = document.querySelector('#whitelist .errorField');
+            errorField.textContent = validation;
+            errorField.classList.add('shown');
+
+            // Remove class once css fadeout animation finishes
+            setTimeout(() => {
+                errorField.textContent = '';
+                errorField.classList.remove('shown');
+            }, 1000);
+        } else {
+            list.push(input.value);
+            input.value = '';
+        }
         return list;
     });
 });
