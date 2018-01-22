@@ -208,9 +208,9 @@ document.querySelector('#blockgroups input').addEventListener('click', () => {
         .then(updateBlockgroups)
         .then(() => selectGroup(newGroup));
 });
-// Whitelist
+// Whitelist and blacklist
 //      Update the whitelist
-function updateList(modify) {
+function updateWhitelistData(modify) {
     return browser.storage.local.get('whitelist').then(result => {
         var newWhitelist = (typeof result.whitelist === 'undefined') ? [] : result.whitelist;
         modify(newWhitelist);
@@ -218,6 +218,14 @@ function updateList(modify) {
             .then(updateWhitelist);
         console.log(`Storing new whitelist [${newWhitelist}]`);
     });
+}
+//      Update the blacklist
+function updateBlacklistData(modify) {
+    modify(currentBlockgroup.blacklist);
+    updateBlockgroup(currentBlockgroup)
+        .then(updateBlacklist);
+    console.log(`Storing new blacklist for blockgroup ${currentBlockgroup.id}
+                 ${currentBlockgroup.name}: [${currentBlockgroup.blacklist}]`);
 }
 //      Ensure website entry is appropriate
 function validateEntry(current, entry) {
@@ -230,13 +238,20 @@ function validateEntry(current, entry) {
 document.querySelector('#whitelist')
     .addEventListener('submit', event => {
     event.preventDefault();
-
-    let input = document.querySelector('#whitelist input[type=text]');
-    updateList((list) => {
+    addToSitelist('whitelist');
+});
+document.querySelector('#blockgroup_blacklist')
+    .addEventListener('submit', event => {
+    event.preventDefault();
+    addToSitelist('blockgroup_blacklist');
+});
+function addToSitelist(listInUse) {
+    let input = document.querySelector(`#${listInUse} input[type=text]`);
+    let update = (listInUse == 'whitelist') ? updateWhitelistData : updateBlacklistData;
+    update((list) => {
         let validation = validateEntry(list, input.value);
-        console.log(validation == '');
         if (validation != '') {
-            let errorField = document.querySelector('#whitelist .errorField');
+            let errorField = document.querySelector(`#${listInUse} .errorField`);
             errorField.textContent = validation;
             errorField.classList.add('shown');
 
@@ -251,16 +266,22 @@ document.querySelector('#whitelist')
         }
         return list;
     });
-});
+}
 //      Removing a site
 document.querySelector('#whitelist input[type=button]')
-    .addEventListener('click', event => {
+    .addEventListener('click', event => removeFromSitelist('whitelist'));
+document.querySelector('#blockgroup_blacklist input[type=button]')
+    .addEventListener('click',
+                      event => removeFromSitelist('blockgroup_blacklist'));
+function removeFromSitelist(listInUse) {
+    let select = (listInUse == 'whitelist') ? whitelist : blacklist;
     var indicesToRemove = [];
-    for (let i = 0, option; i < whitelist.length; i++) {
-        option = whitelist.options[i];
+    for (let i = 0, option; i < select.length; i++) {
+        option = select.options[i];
         if (option.selected) indicesToRemove.push(i);
     }
-    updateList((list) => {
+    let update = (listInUse == 'whitelist') ? updateWhitelistData : updateBlacklistData;
+    update((list) => {
         for (let i = 0; i < indicesToRemove.length; i++) {
             // Subtract the number of already
             // removed elements due to shortened array.
@@ -268,7 +289,7 @@ document.querySelector('#whitelist input[type=button]')
         }
         return list;
     });
-});
+}
 // Name
 name.addEventListener('input', () => {
     currentBlockgroup.name = name.value;
