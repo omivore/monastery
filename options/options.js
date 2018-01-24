@@ -297,6 +297,17 @@ name.addEventListener('input', () => {
         .then(updateBlockgroups)
         .then(() => selectGroup(currentBlockgroup));
 });
+// Blocking
+hours.addEventListener('input', updateBlockTime);
+minutes.addEventListener('input', updateBlockTime);
+function updateBlockTime() {
+    // Multiply by numbers to quick convert to integers
+    let blockTime = hours.value * 60 + minutes.value * 1;
+    console.log(blockTime);
+    currentBlockgroup.allottedTime = blockTime;
+    updateBlockgroup(currentBlockgroup)
+        .then(updateTime);
+}
 
 // Initialize page
 updateWhitelist();
