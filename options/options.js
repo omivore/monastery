@@ -108,9 +108,13 @@ function updateNotifications() {
     while (notes.hasChildNodes()) notes.removeChild(notes.lastChild);
 
     // Repopulate
-    for (let notification of currentBlockgroup.notifications.notifications) {
-        notes.appendChild(newNotificationEntry(currentBlockgroup, notification));
+    // If there's nothing in the notifications queue, add a default 15 min
+    if (currentBlockgroup.notifications.notifications.length == 0) {
+        currentBlockgroup.notifications.notifications.push(15);
     }
+    currentBlockgroup.notifications.notifications.forEach((notification, i) => {
+        notes.appendChild(newNotificationEntry(i, notification));
+    });
 }
 
 /**********    HTML child creation methods  **********/
@@ -129,7 +133,7 @@ function newBlockgroupEntry(blockgroup) {
     var closeBtn = document.createElement('span');
     closeBtn.classList.add('close_button');
     closeBtn.classList.add('red');
-    closeBtn.addEventListener('click', e => {
+    closeBtn.addEventListener('click', () => {
         // Remove this blockgroup
         browser.storage.local.get('blockgroups')
             .then(vars => {
@@ -150,15 +154,25 @@ function newBlockgroupEntry(blockgroup) {
     return entry;
 }
 
-function newNotificationEntry(blockgroup, noteTime) {
+function newNotificationEntry(index, noteTime) {
     var entry = document.createElement('div');
     entry.classList.add('entry');
     var setting = document.createElement('input');
     setting.setAttribute('type', 'number');
     setting.value = noteTime;
+    setting.addEventListener('input', () => {
+        currentBlockgroup.notifications.notifications[index] = setting.value;
+        updateBlockgroup(currentBlockgroup)
+            .then(updateNotifications);
+    });
     var closeBtn = document.createElement('span');
     closeBtn.classList.add('close_button');
     closeBtn.classList.add('red');
+    closeBtn.addEventListener('click', () => {
+        currentBlockgroup.notifications.notifications.splice(index, 1);
+        updateBlockgroup(currentBlockgroup)
+            .then(updateNotifications);
+    });
     closeBtn.appendChild(document.createTextNode('×'));
 
     entry.appendChild(setting);
@@ -318,6 +332,21 @@ delay.addEventListener('input', () => {
     currentBlockgroup.delay.delay= delay.value;
     updateBlockgroup(currentBlockgroup)
         .then(updateDelay);
+});
+// Notifications
+noteCheck.addEventListener('input', () => {
+    currentBlockgroup.notifications.isNotificationsActive = noteCheck.checked;
+    updateBlockgroup(currentBlockgroup)
+        .then(updateNotifications);
+});
+document.querySelector('#blockgroup_notifications input[type=button]')
+    .addEventListener('click', () => {
+    console.log("Adding new notification");
+
+    // Create new notification time
+    currentBlockgroup.notifications.notifications.push(15);
+    updateBlockgroup(currentBlockgroup)
+        .then(updateNotifications);
 });
 
 // Initialize page
