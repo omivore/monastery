@@ -308,6 +308,17 @@ function updateBlockTime() {
     updateBlockgroup(currentBlockgroup)
         .then(updateTime);
 }
+// Delays
+delayCheck.addEventListener('input', () => {
+    currentBlockgroup.delay.isDelayActive = delayCheck.checked;
+    updateBlockgroup(currentBlockgroup)
+        .then(updateDelay);
+});
+delay.addEventListener('input', () => {
+    currentBlockgroup.delay.delay= delay.value;
+    updateBlockgroup(currentBlockgroup)
+        .then(updateDelay);
+});
 
 // Initialize page
 updateWhitelist();

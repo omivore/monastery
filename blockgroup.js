@@ -1,5 +1,4 @@
 // blockgroup.js
-console.log("blocking groups");
 /**
  * Creates a Blockgroup data structure
  * id is a unique identifier to make the storage blockgroups mutable
