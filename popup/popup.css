@@ -12,18 +12,30 @@ p {
     text-align: right;
     color: #2D2D2D;
 }
-#timer {
+#timers {
+    max-height: 265px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 0 10px 0 0;
+}
+.name {
+    margin-top: 20px;
+}
+.name:first-child {
+    margin-top: 0;
+}
+.timer {
     margin: 5px 0 3px 0;
     border: 1px black solid;
     font-size: 20px;
     text-align: center;
 }
-#expiry {
+.expiry {
     font-size: 10px;
 }
 #settings {
     float: right;
-    margin: 20px 0 10px 0;
+    margin-bottom: 10px;
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     cursor: pointer;
     color: white;

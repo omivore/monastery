@@ -11,11 +11,44 @@ function updateClock(secondsLeft) {
     var seconds = (secondsLeft < 10) ? `0${secondsLeft}` : secondsLeft;
     time += seconds;
 
-    document.getElementById('timer').textContent = time;
+    return time;
+}
+
+function addTimer(blockgroup) {
+    var name = document.createElement("p");
+    name.appendChild(document.createTextNode(blockgroup.name));
+    name.classList.add("name");
+
+    var timer = document.createElement("p");
+    timer.appendChild(document.createTextNode(
+        updateClock(blockgroup.hourglass.timeLeft)
+    ));
+    timer.classList.add("timer");
+
+    var expiry = document.createElement("p");
+    expiry.appendChild(document.createTextNode(
+        // TODO: Use expirations here
+        "Expires in "
+    ));
+    expiry.classList.add("expiry");
+
+    var div = document.createElement("div");
+    div.id = blockgroup.id;
+    div.appendChild(name);
+    div.appendChild(timer);
+    div.appendChild(expiry);
+
+    return div;
 }
 
 document.getElementById('settings').addEventListener('click',
     event => browser.runtime.openOptionsPage());
 
-// TEMP TODO: get rid of temp
-updateClock(0);
+window.addEventListener('load', (event) => {
+    let parent = document.getElementById('timers');
+    browser.storage.local.get('blockgroups').then(vars => {
+        for (let key in vars.blockgroups) {
+            parent.appendChild(addTimer(vars.blockgroups[key]));
+        }
+    });
+});
