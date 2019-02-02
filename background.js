@@ -39,14 +39,24 @@ function isTresspassing() {
         // If result is not empty, then is tresspassing.
         if (result.length > 0) {
             // If tresspassing, then show so in the extension icon.
-            browser.browserAction.setIcon({
-                    path: { 48: 'icons/monastery_lock.svg'},
+            // This doesn't work on android so adjust accordingly
+            browser.runtime.getPlatformInfo().then(info => {
+                if (info.os == "android") {
+                    browser.browserAction.setIcon({
+                        path: { 48: 'icons/monastery_lock.svg'},
+                    });
+                }
             });
             return true;
         } else {
             // If not tresspassing, make sure icon is back to normal.
-            browser.browserAction.setIcon({
-                    path: { 48: 'icons/monastery.svg'},
+            // This doesn't work on android so adjust accordingly
+            browser.runtime.getPlatformInfo().then(info => {
+                if (info.os == "android") {
+                    browser.browserAction.setIcon({
+                        path: { 48: 'icons/monastery.svg'},
+                    });
+                }
             });
             return false;
         }
