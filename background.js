@@ -164,6 +164,8 @@ function getTresspassing(process) {
                 // Process whitelist
                 urls = [];  // Clear urls array for reuse
                 for (let site of result.whitelist) {
+                    urls.push('*://*.' + site);
+                    urls.push('*://' + site);
                     urls.push('*://*.' + site + '/*');
                     urls.push('*://' + site + '/*');
                 }
