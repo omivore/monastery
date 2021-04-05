@@ -16,7 +16,7 @@
         "48": "icons/monastery.svg"
     },
 
-    "permissions": ["<all_urls>", "tabs", "notifications", "storage"],
+    "permissions": ["tabs", "notifications", "storage"],
     "background": {
         "scripts": ["background.js"]
     },
