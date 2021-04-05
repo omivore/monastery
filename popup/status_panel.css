@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 body {
+    font-family: system-ui, sans-serif;
     background-color: white;
     padding: 5px 10px 5px 10px;
 }
 p {
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 500;
     font-size: 20px;
     color: #2D2D2D;
@@ -15,7 +14,6 @@ p {
     text-align: center;
 }
 #settings {
-    font-family: "Open Sans", sans-serif;
     cursor: pointer;
     color: #496E94;
     font-size: 10px;

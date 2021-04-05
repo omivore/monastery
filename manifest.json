@@ -23,11 +23,9 @@
     "browser_action": {
         "default_icon": "icons/monastery.svg",
         "default_title": "Monastery",
-        "default_popup": "popup/status_panel.html",
-        "browser_style": false
+        "default_popup": "popup/status_panel.html"
     },
     "options_ui": {
-        "page": "options/options.html",
-        "browser_style": false
+        "page": "options/options.html"
     }
 }
