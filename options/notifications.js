@@ -18,13 +18,20 @@ function loadNotifications() {
 
 // Solely adds another notification nubmer input and span text to the notifications div
 function addNotifyEntry(noteTime) {
+    document.querySelector('#notifyTimes #notifyNone').style.display = 'none';
+
+    var noticeRow = document.createElement('div');
+    noticeRow.classList.add('notifyRow');
+
     var noticeDiv = document.createElement('div');
     noticeDiv.classList.add('notifyTime');
+    noticeRow.appendChild(noticeDiv);
 
     var noticeNode = document.createElement('input');
     noticeNode.setAttribute('type', 'number');
     noticeNode.setAttribute('min', '1');
     noticeNode.setAttribute('value', noteTime);
+    noticeNode.setAttribute('size', '5');
     noticeNode.addEventListener('change', event => saveNotifications());
     noticeDiv.appendChild(noticeNode);
 
@@ -32,7 +39,16 @@ function addNotifyEntry(noteTime) {
     noteText.textContent = 'minutes left';
     noticeDiv.appendChild(noteText);
 
-    document.querySelector('#notifications #notifyTimes').appendChild(noticeDiv);
+    var removeButton = document.createElement('span');
+    removeButton.textContent = '(remove)';
+    removeButton.setAttribute('aria-role', 'button');
+    removeButton.addEventListener('click', event => {
+	document.querySelector('#notifications #notifyTimes').removeChild(noticeRow);
+	saveNotifications();
+    });
+    noticeRow.appendChild(removeButton);
+
+    document.querySelector('#notifications #notifyTimes').appendChild(noticeRow);
 }
 
 // Rig up checkbox functionality
@@ -50,6 +66,10 @@ function saveNotifications() {
     savedTimes = [...savedTimes].filter(time => time >= 1).sort((left, right) => right - left);
     browser.storage.sync.set({notifications: savedTimes});
     console.log(`Saved times at ${savedTimes} minute(s)`);
+
+    if (document.querySelector('#notifyTimes').children.length === 1) {
+	document.querySelector('#notifications #notifyNone').style.display = null;
+    }
 }
 
 function setNotifications(shouldBeEnabled) {
@@ -61,29 +81,19 @@ function setNotifications(shouldBeEnabled) {
     if (shouldBeEnabled) {
         for (let paragraph of document.querySelectorAll('#notifications div span'))
             paragraph.classList.remove('notesDisabled');
-        document.querySelector('#notifications div p').classList.remove('notesDisabled');
     }
     else {
         for (let paragraph of document.querySelectorAll('#notifications div span'))
             paragraph.classList.add('notesDisabled');
-        document.querySelector('#notifications div p').classList.add('notesDisabled');
     }
     browser.storage.sync.set({notifyOn: shouldBeEnabled});
     console.log(`Turned notifications ${(shouldBeEnabled) ? 'on' : 'off'}`);
 }
 
 // Add functionality for the add button
-document.querySelector('#notifications input[value=Add]').addEventListener('click', event => {
+document.querySelector('#notifications input[value="Add Notification"]').addEventListener('click', event => {
     addNotifyEntry(15);
     saveNotifications();
-});
-// Add functionality for the remove button
-document.querySelector('#notifications input[value=Remove]').addEventListener('click', event => {
-    if (document.querySelectorAll('#notifications div div').length > 1) {
-        document.querySelector('#notifications div')
-            .removeChild(document.querySelector('#notifications div div:last-of-type'));
-        saveNotifications();
-    }
 });
 
 document.addEventListener('DOMContentLoaded', event => loadNotifications());
