@@ -15,8 +15,7 @@
                         <select multiple></select>
                         <input type="button" value="Remove">
                     </div>
-                    <br>
-                    <div>
+                    <div class="sitelistAdd">
                         <input type="text" placeholder="Add to blacklist..." autocomplete="off">
                         <input type="submit" value="Add">
                     </div>
@@ -29,12 +28,11 @@
                         <input type="button" value="Remove">
                     </div>
                     <p class="infotext">
-                        Copy your URL carefully!<br />
-                        Firefox is case sensitive.<br />
-                        <i>reddit.com/r/Overwatch might work while<br />
-                        reddit.com/r/overwatch might not</i>
+                        Copy your URL carefully! Firefox is case sensitive.
+                        '<i>reddit.com/r/Overwatch</i>' might work while
+                        '<i>reddit.com/r/overwatch</i>' might not!
                     </p>
-                    <div>
+                    <div class="sitelistAdd">
                         <input type="text" placeholder="Add to whitelist..." autocomplete="off">
                         <input type="submit" value="Add">
                     </div>
@@ -47,49 +45,44 @@
                     <div id="blockTime">
                         <p>
                             Amount of time permitted to spend
-                            <br />
                             on blacklisted sites per day:
                         </p>
-                        <br /><br />
-                        <input id="hours" type="number" min="0" max="23">
-                        <p>Hours</p>
-                        <input id="minutes" type="number" min="0" max="59">
-                        <p>Minutes</p>
-                        <br /><br />
+                        <p>
+			    <input id="hours" type="number" min="0" max="23" size="2">
+			    <label for="hours">hours,</label>
+			    <input id="minutes" type="number" min="0" max="59" size="2">
+			    <label for="minutes">minutes</label>
                         <div>
-                            <p id="saveState"></p>
+                            <span id="saveState"></span>
                             <input type="submit" value="Save">
                         </div>
                     </div>
                 </form>
                 <form id="notifications">
                     <h2>Notification Settings</h2>
-                    <div id="checkboxSwitch">
-                        <input type="checkbox">
-                        <span>
-                            Notify me when I'm<br>
-                            almost out of time
-                        </span>
+                    <div id="notifySwitchSection">
+                        <input type="checkbox" id="notifySwitch">
+                        <label for="notifySwitch">
+                            Notify me when I'm almost out of time
+                        </label>
                     </div>
                     <div id="notifyTimes">
-                        <p>Notify me when there remains:</p>
-                    </div>
-                    <input type="button" value="Add">
-                    <input type="button" value="Remove">
+		        <span id="notifyNone" class="notifyRow">(you won't be notified)</span>
+		    </div>
+                    <input type="button" value="Add Notification">
                 </form>
                 <form id="delays">
-                    <h2>Delay Page Settings</h2>
-                    <div id="delaySwitch">
-                        <input type="checkbox">
-                        <span>
-                            Delay access to a page<br>
-                            when I navigate to it
-                        </span>
+                    <h2>Delay Settings</h2>
+                    <div id="delaySwitchSection">
+                        <input type="checkbox" id="delaySwitch">
+			<label for="delaySwitch">
+			  Delay access to a blocked page when I navigate to it
+			</label>
                     </div>
-                    <div id="delayLength">
-                        <p>Delay for:</p>
-                        <input type="number" min=".5" step=".5">
-                        <span>minutes</span>
+                    <p>
+                        Delay for
+                        <input id="delayLength" type="number" min="5" step="5">
+                        seconds
                     </div>
                 </form>
             </div>

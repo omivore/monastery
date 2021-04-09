@@ -136,6 +136,8 @@ function delay(delayTime) {
                         });
                         browser.tabs.onUpdated.removeListener(delayListen);
                     }
+                }, {
+                    urls: [browser.runtime.getURL('pages/delay_page.html')],
                 });
             });
         }

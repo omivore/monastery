@@ -1,7 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
-p, h2, span {
-    font-family: "Fira Sans", Arial, sans-serif;
-}
 @keyframes fadeOut {
     from {opacity: 1;}
     to {opacity: 0;}
@@ -13,16 +9,21 @@ p, h2, span {
     align-items: stretch;
     justify-content: space-around;
 }
-form {
-    display: inline-block;
+
+#settingsFlexer > div {
+    width: 45%;
 }
 
 /* Blacklisted And Whitelisted Settings */
-.sitelist select, .sitelist input[type=text] {
-    width: 255px;
+.sitelist select {
+    display: inline-block;
+    width: 100%;
 }
-.sitelist input[type=button], .sitelist input[type=submit] {
-    width: 90px;
+.sitelistAdd {
+    display: flex;
+}
+.sitelistAdd input[type=text] {
+    width: 100%;
 }
 .sitelist .errorField {
     margin-top: 5px;
@@ -34,35 +35,24 @@ form {
 }
 
 .infotext {
-    width: 245px;
-    text-align: left;
     border: 2px solid goldenrod;
     border-radius: 5px;
     padding: 3px;
-    font-size: 12px;
+    font-size: small;
 }
 
 /* Blocking Settings */
-#blockTime input, #blockTime p{
-    display: inline;
-}
 #blockTime input {
-    width: 70px;
+    display: inline;
     text-align: center;
 }
-#blockTime #minutes {
-    margin-left: 10px;
-}
 #blockTime div {
-    float: right;
+    text-align: right;
 }
 #blockTime #saveState {
     margin-right: 10px;
-    font-size: 15px;
+    font-size: small;
     font-style: italic;
-}
-#blockTime input[type=submit] {
-    width: 75px;
 }
 #blockTime #saveState.edited {
     color: red;
@@ -76,49 +66,49 @@ form {
 /*#settings #notifications {
     width: 320px;
 }*/
-#notifications input[type=button] {
-    width: 105px;
-    margin-top: 20px;
-}
-#notifications input[type=number] {
-    width: 50px;
-    height: 25px;
-}
-#notifications #checkboxSwitch {
+#notifications #notifySwitchSection {
     display: flex;
+    align-items: flex-start;
 }
-#notifications #checkboxSwitch span {
-    display: block;
-    margin-left: 10px;
+#notifications #notifySwitch {
+    margin-right: 1rem;
+}
+#notifications .notifyRow {
+    display: flex;
+    padding: 10px 0 10px;
+    justify-content: space-between;
+    margin-left: 1rem;
+    align-items: center;
 }
 #notifications .notifyTime {
-    padding: 10px 0 10px;
+    display: flex;
+    align-items: center;
 }
 #notifications .notifyTime span {
+    flex-grow: 1;
     margin-left: 10px;
+}
+#notifications .notifyRow span[aria-role=button] {
+    cursor: pointer;
+    color: dimgray;
+    text-decoration: none;
+    font-size: small;
 }
 #notifications .notesDisabled {
     color: gray;
 }
 
 /* Delay Settings */
-#delays input[type=button] {
-    width: 105px;
-    margin-top: 20px;
+#delays #delaySwitchSection {
+    display: flex;
+    align-items: flex-start;
+}
+#delays #delaySwitch {
+    margin-right: 1rem;
 }
 #delays input[type=number] {
     width: 60px;
     height: 25px;
-}
-#delays #delaySwitch {
-    display: flex;
-}
-#delays #delaySwitch span {
-    display: block;
-    margin-left: 10px;
-}
-#delays #delayLength span {
-    margin-left: 10px;
 }
 #delays .delayDisabled {
     color: gray;
