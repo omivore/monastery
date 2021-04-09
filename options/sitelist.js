@@ -66,6 +66,13 @@ function updateSitelist(sitelist, modify) {
 function validateList(sitelist, existList, addition) {
     var errorText = '';
 
+    try {
+	var url = new URL(addition);
+	addition = url.host;
+	addition += (url.port ? `:${url.port}` : '');
+	addition += (url.pathname === '/' ? '' : url.pathname);
+    } catch {}
+
     if (addition == '') errorText = 'No site provided.'
     else if (existList.indexOf(addition) != -1)
         errorText = 'Site is already on the list.'
