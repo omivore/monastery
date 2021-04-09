@@ -47,14 +47,13 @@
                             Amount of time permitted to spend
                             on blacklisted sites per day:
                         </p>
-                        <br /><br />
-                        <input id="hours" type="number" min="0" max="23">
-                        <p>Hours</p>
-                        <input id="minutes" type="number" min="0" max="59">
-                        <p>Minutes</p>
-                        <br /><br />
+                        <p>
+			    <input id="hours" type="number" min="0" max="23" size="2">
+			    <label for="hours">hours,</label>
+			    <input id="minutes" type="number" min="0" max="59" size="2">
+			    <label for="minutes">minutes</label>
                         <div>
-                            <p id="saveState"></p>
+                            <span id="saveState"></span>
                             <input type="submit" value="Save">
                         </div>
                     </div>

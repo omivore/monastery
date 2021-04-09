@@ -42,26 +42,17 @@
 }
 
 /* Blocking Settings */
-#blockTime input, #blockTime p{
-    display: inline;
-}
 #blockTime input {
-    width: 70px;
+    display: inline;
     text-align: center;
 }
-#blockTime #minutes {
-    margin-left: 10px;
-}
 #blockTime div {
-    float: right;
+    text-align: right;
 }
 #blockTime #saveState {
     margin-right: 10px;
-    font-size: 15px;
+    font-size: small;
     font-style: italic;
-}
-#blockTime input[type=submit] {
-    width: 75px;
 }
 #blockTime #saveState.edited {
     color: red;
