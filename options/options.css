@@ -23,7 +23,7 @@
     display: flex;
 }
 .sitelistAdd input[type=text] {
-    flex-grow: 1;
+    width: 100%;
 }
 .sitelist .errorField {
     margin-top: 5px;
